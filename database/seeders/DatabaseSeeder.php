@@ -47,28 +47,21 @@ class DatabaseSeeder extends Seeder
             Storage::delete($livewireTmpFile);
         }
 
-        $pathDasawismaActivity = storage_path('app/public/image/dasawisma-activities');
-        $profileImgFiles = File::allFiles($pathDasawismaActivity);
-        foreach ($profileImgFiles as $profileImgFile) {
-            File::delete($pathDasawismaActivity . '/' . $profileImgFile->getFilename());
+        $imageFilepath = 'image';
+
+        $pathDasawismaActivity = $imageFilepath . '/dasawisma-activities';
+        if (Storage::disk('public')->directoryExists($pathDasawismaActivity)) {
+            Storage::disk('public')->deleteDirectory($pathDasawismaActivity);
         }
 
-        $pathSumselNews = storage_path('app/public/image/sumsel-news');
-        $profileImgFiles = File::allFiles($pathSumselNews);
-        foreach ($profileImgFiles as $profileImgFile) {
-            File::delete($pathSumselNews . '/' . $profileImgFile->getFilename());
+        $pathSumselNews = $imageFilepath . '/sumsel-news';
+        if (Storage::disk('public')->directoryExists($pathSumselNews)) {
+            Storage::disk('public')->deleteDirectory($pathSumselNews);
         }
 
-        $pathProfile = storage_path('app/public/image/profiles');
-        $profileImgFiles = File::allFiles($pathProfile);
-        foreach ($profileImgFiles as $profileImgFile) {
-            File::delete($pathProfile . '/' . $profileImgFile->getFilename());
-        }
-
-        $pathSumselNews = storage_path('app/public/image/sumsel-news');
-        $profileImgFiles = File::allFiles($pathSumselNews);
-        foreach ($profileImgFiles as $profileImgFile) {
-            File::delete($pathSumselNews . '/' . $profileImgFile->getFilename());
+        $pathProfile = $imageFilepath . '/profiles';
+        if (Storage::disk('public')->directoryExists($pathProfile)) {
+            Storage::disk('public')->deleteDirectory($pathProfile);
         }
 
         $this->call([
