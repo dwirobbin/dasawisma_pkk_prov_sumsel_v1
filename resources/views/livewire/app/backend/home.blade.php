@@ -23,7 +23,15 @@
                 </div>
             </div>
         </div>
-        <div class="card-body">
+
+        <div wire:loading.delay class="container">
+            <div class="text-center mt-2">
+                <span wire:loading role="status" class="spinner-border spinner-border-sm"></span>&ensp;
+                <span wire:loading role="status">Memuat..</span>
+            </div>
+        </div>
+
+        <div wire:loading.class='invisible' class="card-body">
             <div class="row row-cards gap-3">
                 <div class="col-md">
                     <div class="row gap-3">

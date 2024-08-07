@@ -19,7 +19,7 @@
                 data
             </label>
         </div>
-        @if (auth()->user()->role_id != 3)
+        {{-- @if (auth()->user()->role_id != 3)
             <div class="text-muted">
                 <div class="dropdown-center btn-group" x-data="{ open: false }" x-on:click.outside="open = false">
                     <button x-on:click="open = !open" :class="{ 'show': open == true }" class="btn btn-info dropdown-toggle"
@@ -52,10 +52,10 @@
                     </ul>
                 </div>
             </div>
-        @endif
+        @endif --}}
         <div class="text-muted">
             <div class="input-icon">
-                <input type="text" wire:model.live='search' class="form-control" placeholder="Cari...">
+                <input type="text" wire:model.live.debounce.300ms='search' class="form-control" placeholder="Cari...">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                         stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -68,20 +68,27 @@
         </div>
     </div>
 
-    <div class="table-responsive">
+    <div wire:loading.delay class="container">
+        <div class="text-center mt-2">
+            <span wire:loading role="status" class="spinner-border spinner-border-sm"></span>&ensp;
+            <span wire:loading role="status">Memuat..</span>
+        </div>
+    </div>
+
+    <div wire:loading.class='invisible' class="table-responsive">
         <table class="table table-vcenter card-table table-striped table-hover">
             <thead>
                 <tr>
-                    @if (auth()->user()->role_id != 3)
+                    {{-- @if (auth()->user()->role_id != 3)
                         <th rowspan="2" class="w-1">
                             <input type="checkbox" wire:model.live='bulkSelectAll' class="form-check-input m-0 align-middle">
                         </th>
-                    @endif
+                    @endif --}}
                     <th rowspan="2">No.</th>
                     <th rowspan="2">
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             Dasawisma
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-activities.table', 'sort-by', { columnName: 'dsw.name' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'dsw.name' && $sortDirection == 'desc')
@@ -124,13 +131,13 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     <th rowspan="2">
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             Wilayah
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-activities.table', 'sort-by', { columnName: 'area' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'area' && $sortDirection == 'desc')
@@ -173,13 +180,13 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     <th rowspan="2">
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             Kepala Keluarga
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-activities.table', 'sort-by', { columnName: 'fh.family_head' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'fh.family_head' && $sortDirection == 'desc')
@@ -222,7 +229,7 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     <th colspan="2" class="text-center">Aktifitas</th>
@@ -234,7 +241,7 @@
                     <th>
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             Usaha Peningkatan Pndptn Keluarga
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-activities.table', 'sort-by', { columnName: 'up2k_activity' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'up2k_activity' && $sortDirection == 'desc')
@@ -277,13 +284,13 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     <th>
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             Kegiatan Usaha Kesehatan Lingkungan
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-activities.table', 'sort-by', { columnName: 'fa.env_health_activity' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'fa.env_health_activity' && $sortDirection == 'desc')
@@ -326,7 +333,7 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                 </tr>
@@ -334,12 +341,12 @@
             <tbody>
                 @forelse ($this->familyActivities as $familyActivity)
                     <tr wire:key='{{ $familyActivity->id }}' class="text-nowrap">
-                        @if (auth()->user()->role_id != 3)
+                        {{-- @if (auth()->user()->role_id != 3)
                             <td>
                                 <input type="checkbox" wire:model.live='bulkSelected' class="form-check-input m-0 align-middle"
                                     value="{{ $familyActivity->id }}">
                             </td>
-                        @endif
+                        @endif --}}
                         <th class="text-muted">
                             {{ ($this->familyActivities->currentPage() - 1) * $this->familyActivities->perPage() + $loop->iteration }}
                         </th>
@@ -375,11 +382,13 @@
             </tbody>
         </table>
     </div>
-    @if (method_exists($this->familyActivities, 'hasPages'))
-        @if ($this->familyActivities->hasPages())
-            <div class="card-footer py-2">
-                {{ $this->familyActivities->links() }}
-            </div>
+    <div wire:loading.class='invisible'>
+        @if (method_exists($this->familyActivities, 'hasPages'))
+            @if ($this->familyActivities->hasPages())
+                <div class="card-footer py-2">
+                    {{ $this->familyActivities->links() }}
+                </div>
+            @endif
         @endif
-    @endif
+    </div>
 </div>

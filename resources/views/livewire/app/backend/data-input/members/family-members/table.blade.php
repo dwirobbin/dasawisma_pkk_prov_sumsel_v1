@@ -19,7 +19,7 @@
                 data
             </label>
         </div>
-        @if (auth()->user()->role_id != 3)
+        {{-- @if (auth()->user()->role_id != 3)
             <div class="text-muted">
                 <div class="dropdown-center btn-group" x-data="{ open: false }" x-on:click.outside="open = false">
                     <button x-on:click="open = !open" :class="{ 'show': open == true }" class="btn btn-info dropdown-toggle"
@@ -52,10 +52,10 @@
                     </ul>
                 </div>
             </div>
-        @endif
+        @endif --}}
         <div class="text-muted">
             <div class="input-icon">
-                <input type="text" wire:model.live='search' class="form-control" placeholder="Cari...">
+                <input type="text" wire:model.live.debounce.300ms='search' class="form-control" placeholder="Cari...">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                         stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -68,20 +68,27 @@
         </div>
     </div>
 
-    <div class="table-responsive">
+    <div wire:loading.delay class="container">
+        <div class="text-center mt-2">
+            <span wire:loading role="status" class="spinner-border spinner-border-sm"></span>&ensp;
+            <span wire:loading role="status">Memuat..</span>
+        </div>
+    </div>
+
+    <div wire:loading.class='invisible' class="table-responsive">
         <table class="table table-vcenter card-table table-striped table-hover">
             <thead>
                 <tr>
-                    @if (auth()->user()->role_id != 3)
+                    {{-- @if (auth()->user()->role_id != 3)
                         <th rowspan="2" class="w-1">
                             <input type="checkbox" wire:model.live='bulkSelectAll' class="form-check-input m-0 align-middle">
                         </th>
-                    @endif
+                    @endif --}}
                     <th rowspan="2">No.</th>
                     <th rowspan="2">
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             Dasawisma
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-members.table', 'sort-by', { columnName: 'dsw.name' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'dsw.name' && $sortDirection == 'desc')
@@ -124,13 +131,13 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     <th rowspan="2">
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             Wilayah
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-members.table', 'sort-by', { columnName: 'area' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'area' && $sortDirection == 'desc')
@@ -173,13 +180,13 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     <th rowspan="2">
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             No. KK
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-members.table', 'sort-by', { columnName: 'fh.kk_number' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'fh.kk_number' && $sortDirection == 'desc')
@@ -222,13 +229,13 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     <th rowspan="2">
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             Nama
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-members.table', 'sort-by', { columnName: 'fm.name' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'fm.name' && $sortDirection == 'desc')
@@ -271,13 +278,13 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     <th rowspan="2">
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             NIK
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-members.table', 'sort-by', { columnName: 'fm.nik_number' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'fm.nik_number' && $sortDirection == 'desc')
@@ -320,13 +327,13 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     <th rowspan="2">
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             Tgl Lahir
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-members.table', 'sort-by', { columnName: 'fm.birth_date' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'fm.birth_date' && $sortDirection == 'desc')
@@ -369,14 +376,14 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     <th colspan="2" class="text-center">Status</th>
                     <th rowspan="2">
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             Jenis Kelamin
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-members.table', 'sort-by', { columnName: 'fm.gender' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'fm.gender' && $sortDirection == 'desc')
@@ -419,13 +426,13 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     <th rowspan="2">
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             Pendidikan Terakhir
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-members.table', 'sort-by', { columnName: 'fm.last_education' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'fm.last_education' && $sortDirection == 'desc')
@@ -468,13 +475,13 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     <th rowspan="2">
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             Pekerjaan
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-members.table', 'sort-by', { columnName: 'fm.profession' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'fm.profession' && $sortDirection == 'desc')
@@ -517,7 +524,7 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     @if (auth()->user()->role_id != 3)
@@ -528,7 +535,7 @@
                     <th>
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             di Keluarga
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-members.table', 'sort-by', { columnName: 'fm.status' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'fm.status' && $sortDirection == 'desc')
@@ -571,13 +578,13 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     <th>
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             Kawin
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-members.table', 'sort-by', { columnName: 'fm.marital_status' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'fm.marital_status' && $sortDirection == 'desc')
@@ -620,7 +627,7 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                 </tr>
@@ -631,12 +638,12 @@
                 @forelse ($this->familyMembers as $kkNumber => $familyMembers)
                     @foreach ($familyMembers as $familyMember)
                         <tr wire:key='family-member-{{ $familyMember->id }}' class="text-nowrap">
-                            @if (auth()->user()->role_id != 3)
+                            {{-- @if (auth()->user()->role_id != 3)
                                 <td>
                                     <input type="checkbox" wire:model.live='bulkSelected' class="form-check-input m-0 align-middle"
                                         value="{{ $familyMember->id }}">
                                 </td>
-                            @endif
+                            @endif --}}
                             <th class="text-muted">{{ $i }}</th>
                             <td class="text-muted">{{ $familyMember->dasawisma_name }}</td>
                             <td class="text-muted">{{ $familyMember->area }}</td>
@@ -681,11 +688,13 @@
             </tbody>
         </table>
     </div>
-    @if (method_exists($this->familyMembers, 'hasPages'))
-        @if ($this->familyMembers->hasPages())
-            <div class="card-footer py-2">
-                {{ $this->familyMembers->links() }}
-            </div>
+    <div wire:loading.class='invisible'>
+        @if (method_exists($this->familyMembers, 'hasPages'))
+            @if ($this->familyMembers->hasPages())
+                <div class="card-footer py-2">
+                    {{ $this->familyMembers->links() }}
+                </div>
+            @endif
         @endif
-    @endif
+    </div>
 </div>

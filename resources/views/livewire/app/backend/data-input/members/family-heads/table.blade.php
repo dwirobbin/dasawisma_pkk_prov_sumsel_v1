@@ -19,7 +19,7 @@
                 data
             </label>
         </div>
-        @if (auth()->user()->role_id != 3)
+        {{-- @if (auth()->user()->role_id != 3)
             <div class="text-muted">
                 <div class="dropdown-center btn-group" x-data="{ open: false }" x-on:click.outside="open = false">
                     <button x-on:click="open = !open" :class="{ 'show': open == true }" class="btn btn-info dropdown-toggle"
@@ -52,10 +52,10 @@
                     </ul>
                 </div>
             </div>
-        @endif
+        @endif --}}
         <div class="text-muted">
             <div class="input-icon">
-                <input type="text" wire:model.live='search' class="form-control" placeholder="Cari...">
+                <input type="text" wire:model.live.debounce.300ms='search' class="form-control" placeholder="Cari...">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                         stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -68,19 +68,26 @@
         </div>
     </div>
 
-    <div class="table-responsive">
+    <div wire:loading.delay class="container">
+        <div class="text-center mt-2">
+            <span wire:loading role="status" class="spinner-border spinner-border-sm"></span>&ensp;
+            <span wire:loading role="status">Memuat..</span>
+        </div>
+    </div>
+
+    <div wire:loading.class='invisible' class="table-responsive">
         <table class="table table-vcenter card-table table-striped table-hover table-nowrap">
             <thead>
                 <tr>
-                    @if (auth()->user()->role_id != 3)
+                    {{-- @if (auth()->user()->role_id != 3)
                         <th class="w-1">
                             <input type="checkbox" wire:model.live='bulkSelectAll' class="form-check-input m-0 align-middle">
                         </th>
-                    @endif
+                    @endif --}}
                     <th>No.</th>
                     <th>
                         <span class="d-inline-block py-1">Dasawisma</span>
-                        <span x-on:click="$dispatch('sort-by', { columnName: 'dsw.name' })" class="float-end" style="padding-top: 1.5px"
+                        {{-- <span x-on:click="$dispatch('sort-by', { columnName: 'dsw.name' })" class="float-end" style="padding-top: 1.5px"
                             role="button">
                             @if ($sortColumn == 'dsw.name' && $sortDirection == 'desc')
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down" width="24"
@@ -122,11 +129,11 @@
                                     <path d="M17 15v-2" />
                                 </svg>
                             @endif
-                        </span>
+                        </span> --}}
                     </th>
                     <th>
                         <span class="d-inline-block py-1">Wilayah</span>
-                        <span x-on:click="$dispatch('sort-by', { columnName: 'area' })" class="float-end" style="padding-top: 1.5px"
+                        {{-- <span x-on:click="$dispatch('sort-by', { columnName: 'area' })" class="float-end" style="padding-top: 1.5px"
                             role="button">
                             @if ($sortColumn == 'area' && $sortDirection == 'desc')
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
@@ -168,11 +175,11 @@
                                     <path d="M17 15v-2" />
                                 </svg>
                             @endif
-                        </span>
+                        </span> --}}
                     </th>
                     <th>
                         <span class="d-inline-block py-1">No. KK</span>
-                        <span x-on:click="$dispatch('sort-by', { columnName: 'fh.kk_number' })" class="float-end" style="padding-top: 1.5px"
+                        {{-- <span x-on:click="$dispatch('sort-by', { columnName: 'fh.kk_number' })" class="float-end" style="padding-top: 1.5px"
                             role="button">
                             @if ($sortColumn == 'fh.kk_number' && $sortDirection == 'desc')
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
@@ -214,11 +221,11 @@
                                     <path d="M17 15v-2" />
                                 </svg>
                             @endif
-                        </span>
+                        </span> --}}
                     </th>
                     <th>
                         <span class="d-inline-block py-1">Kepala Keluarga</span>
-                        <span x-on:click="$dispatch('sort-by', { columnName: 'fh.family_head' })" class="float-end" style="padding-top: 1.5px"
+                        {{-- <span x-on:click="$dispatch('sort-by', { columnName: 'fh.family_head' })" class="float-end" style="padding-top: 1.5px"
                             role="button">
                             @if ($sortColumn == 'fh.family_head' && $sortDirection == 'desc')
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
@@ -260,7 +267,7 @@
                                     <path d="M17 15v-2" />
                                 </svg>
                             @endif
-                        </span>
+                        </span> --}}
                     </th>
                     @if (auth()->user()->role_id != 3)
                         <th class="w-1">Aksi</th>
@@ -270,12 +277,12 @@
             <tbody>
                 @forelse ($this->familyHeads as $familyHead)
                     <tr wire:key='{{ $familyHead->id }}'>
-                        @if (auth()->user()->role_id != 3)
+                        {{-- @if (auth()->user()->role_id != 3)
                             <td>
                                 <input type="checkbox" wire:model.live='bulkSelected' class="form-check-input m-0 align-middle"
                                     value="{{ $familyHead->id }}">
                             </td>
-                        @endif
+                        @endif --}}
                         <th class="text-muted">
                             {{ ($this->familyHeads->currentPage() - 1) * $this->familyHeads->perPage() + $loop->iteration }}
                         </th>
@@ -310,13 +317,15 @@
             </tbody>
         </table>
     </div>
-    @if (method_exists($this->familyHeads, 'hasPages'))
-        @if ($this->familyHeads->hasPages())
-            <div class="card-footer py-2">
-                {{ $this->familyHeads->links() }}
-            </div>
+    <div wire:loading.class='invisible'>
+        @if (method_exists($this->familyHeads, 'hasPages'))
+            @if ($this->familyHeads->hasPages())
+                <div class="card-footer py-2">
+                    {{ $this->familyHeads->links() }}
+                </div>
+            @endif
         @endif
-    @endif
+    </div>
 
     <livewire:app.backend.data-input.members.family-heads.edit />
 </div>

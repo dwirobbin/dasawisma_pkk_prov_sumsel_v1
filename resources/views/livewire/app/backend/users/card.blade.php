@@ -17,7 +17,7 @@
                 </select>
             </label>
         </div>
-        <div class="text-muted">
+        {{-- <div class="text-muted">
             <ul class="nav nav-pills card-header-pills">
                 <li class="nav-item">
                     <button class="nav-link {{ $sortDirection === 'desc' ? 'active' : '' }}" wire:click="setSort('desc')">
@@ -50,10 +50,10 @@
                     </button>
                 </li>
             </ul>
-        </div>
+        </div> --}}
         <div class="text-muted">
             <div class="input-icon">
-                <input type="text" wire:model.live='search' class="form-control" placeholder="Cari...">
+                <input type="text" wire:model.live.debounce.300ms='search' class="form-control" placeholder="Cari...">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                         stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" wire:loading.remove
@@ -68,7 +68,15 @@
             </div>
         </div>
     </div>
-    <div class="card-body px-3">
+
+    <div wire:loading.delay class="container">
+        <div class="text-center mt-2">
+            <span wire:loading role="status" class="spinner-border spinner-border-sm"></span>&ensp;
+            <span wire:loading role="status">Memuat..</span>
+        </div>
+    </div>
+
+    <div wire:loading.class='invisible' class="card-body px-3">
         <div class="row g-3">
             @forelse ($this->users as $user)
                 <div class="col-md-4 col-xl-3" wire:key='user-{{ $user->id }}'>
@@ -137,13 +145,13 @@
             @endforelse
         </div>
     </div>
-
-    @if (method_exists($this->users, 'hasPages'))
-        @if ($this->users->hasPages())
-            <div class="card-footer pt-1 pb-2 px-3">
-                {{ $this->users->links() }}
-            </div>
+    <div wire:loading.class='invisible'>
+        @if (method_exists($this->users, 'hasPages'))
+            @if ($this->users->hasPages())
+                <div class="card-footer pt-1 pb-2 px-3">
+                    {{ $this->users->links() }}
+                </div>
+            @endif
         @endif
-    @endif
-
+    </div>
 </div>

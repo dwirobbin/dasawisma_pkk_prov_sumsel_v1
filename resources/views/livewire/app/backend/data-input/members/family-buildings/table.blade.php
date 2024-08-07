@@ -19,7 +19,7 @@
                 data
             </label>
         </div>
-        @if (auth()->user()->role_id != 3)
+        {{-- @if (auth()->user()->role_id != 3)
             <div class="text-muted">
                 <div class="dropdown-center btn-group" x-data="{ open: false }" x-on:click.outside="open = false">
                     <button x-on:click="open = !open" :class="{ 'show': open == true }" class="btn btn-info dropdown-toggle"
@@ -52,10 +52,10 @@
                     </ul>
                 </div>
             </div>
-        @endif
+        @endif --}}
         <div class="text-muted">
             <div class="input-icon">
-                <input type="text" wire:model.live='search' class="form-control" placeholder="Cari...">
+                <input type="text" wire:model.live.debounce.300ms='search' class="form-control" placeholder="Cari...">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                         stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -68,20 +68,27 @@
         </div>
     </div>
 
-    <div class="table-responsive">
+    <div wire:loading.delay class="container">
+        <div class="text-center mt-2">
+            <span wire:loading role="status" class="spinner-border spinner-border-sm"></span>&ensp;
+            <span wire:loading role="status">Memuat..</span>
+        </div>
+    </div>
+
+    <div wire:loading.class='invisible' class="table-responsive">
         <table class="table table-vcenter card-table table-hover text-nowrap">
             <thead>
                 <tr>
-                    @if (auth()->user()->role_id != 3)
+                    {{-- @if (auth()->user()->role_id != 3)
                         <th rowspan="2" class="w-1">
                             <input type="checkbox" wire:model.live='bulkSelectAll' class="form-check-input m-0 align-middle">
                         </th>
-                    @endif
+                    @endif --}}
                     <th rowspan="2">No.</th>
                     <th rowspan="2">
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             Dasawisma
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-buildings.table', 'sort-by', { columnName: 'dsw.name' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'dsw.name' && $sortDirection == 'desc')
@@ -124,13 +131,13 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     <th rowspan="2">
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             Wilayah
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-buildings.table', 'sort-by', { columnName: 'area' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'area' && $sortDirection == 'desc')
@@ -173,13 +180,13 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     <th rowspan="2">
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             Kepala Keluarga
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-buildings.table', 'sort-by', { columnName: 'fh.family_head' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'fh.family_head' && $sortDirection == 'desc')
@@ -222,13 +229,13 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     <th rowspan="2">
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             Makanan Pokok
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-buildings.table', 'sort-by', { columnName: 'fb.staple_food' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'fb.staple_food' && $sortDirection == 'desc')
@@ -271,13 +278,13 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     <th rowspan="2">
                         <span class="d-flex flex-nowrap justify-content-between align-items-center">
                             Sumber Air Keluarga
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-buildings.table', 'sort-by', { columnName: 'fb.water_src' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'fb.water_src' && $sortDirection == 'desc')
@@ -320,14 +327,14 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </span>
                     </th>
                     <th colspan="3" class="text-center">Mempunyai</th>
                     <th rowspan="2">
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             Menempel Stiker P4K
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-buildings.table', 'sort-by', { columnName: 'pasting_p4k_sticker' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'pasting_p4k_sticker' && $sortDirection == 'desc')
@@ -370,13 +377,13 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     <th rowspan="2">
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             Kriteria Rumah
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-buildings.table', 'sort-by', { columnName: 'fb.house_criteria' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'fb.house_criteria' && $sortDirection == 'desc')
@@ -419,7 +426,7 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     @if (auth()->user()->role_id != 3)
@@ -430,7 +437,7 @@
                     <th>
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             Jamban
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-buildings.table', 'sort-by', { columnName: 'have_toilet' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'have_toilet' && $sortDirection == 'desc')
@@ -473,13 +480,13 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     <th>
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             TPS
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-buildings.table', 'sort-by', { columnName: 'have_landfill' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'have_landfill' && $sortDirection == 'desc')
@@ -522,13 +529,13 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                     <th>
                         <div class="d-flex flex-nowrap justify-content-between align-items-center">
                             SPAL
-                            <span
+                            {{-- <span
                                 wire:click="$dispatchTo('app.backend.data-input.members.family-buildings.table', 'sort-by', { columnName: 'have_sewerage' })"
                                 class="float-end ms-2" role="button">
                                 @if ($sortColumn == 'have_sewerage' && $sortDirection == 'desc')
@@ -571,7 +578,7 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </div>
                     </th>
                 </tr>
@@ -579,12 +586,12 @@
             <tbody>
                 @forelse ($this->familyBuildings as $familyBuilding)
                     <tr wire:key='{{ $familyBuilding->id }}'>
-                        @if (auth()->user()->role_id != 3)
+                        {{-- @if (auth()->user()->role_id != 3)
                             <td>
                                 <input type="checkbox" wire:model.live='bulkSelected' class="form-check-input m-0 align-middle"
                                     value="{{ $familyBuilding->id }}">
                             </td>
-                        @endif
+                        @endif --}}
                         <th class="text-muted">
                             {{ ($this->familyBuildings->currentPage() - 1) * $this->familyBuildings->perPage() + $loop->iteration }}
                         </th>
@@ -625,11 +632,13 @@
             </tbody>
         </table>
     </div>
-    @if (method_exists($this->familyBuildings, 'hasPages'))
-        @if ($this->familyBuildings->hasPages())
-            <div class="card-footer py-2">
-                {{ $this->familyBuildings->links() }}
-            </div>
+    <div wire:loading.class='invisible'>
+        @if (method_exists($this->familyBuildings, 'hasPages'))
+            @if ($this->familyBuildings->hasPages())
+                <div class="card-footer py-2">
+                    {{ $this->familyBuildings->links() }}
+                </div>
+            @endif
         @endif
-    @endif
+    </div>
 </div>

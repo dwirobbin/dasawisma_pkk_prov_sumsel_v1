@@ -19,7 +19,7 @@
                 data
             </label>
         </div>
-        @if (auth()->user()->role_id != 3)
+        {{-- @if (auth()->user()->role_id != 3)
             <div class="text-muted">
                 <div class="dropdown-center btn-group" x-data="{ open: false }" x-on:click.outside="open = false">
                     <button x-on:click="open = !open" :class="{ 'show': open == true }" class="btn btn-info dropdown-toggle"
@@ -51,10 +51,10 @@
                     </ul>
                 </div>
             </div>
-        @endif
+        @endif --}}
         <div class="text-muted">
             <div class="input-icon">
-                <input type="text" wire:model.live='search' class="form-control" placeholder="Cari...">
+                <input type="text" wire:model.live.debounce.300ms='search' class="form-control" placeholder="Cari...">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                         stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" wire:loading.remove
@@ -70,20 +70,27 @@
         </div>
     </div>
 
-    <div class="table-responsive">
+    <div wire:loading.delay class="container">
+        <div class="text-center mt-2">
+            <span wire:loading role="status" class="spinner-border spinner-border-sm"></span>&ensp;
+            <span wire:loading role="status">Memuat..</span>
+        </div>
+    </div>
+
+    <div wire:loading.class='invisible' class="table-responsive">
         <table class="table table-vcenter card-table table-striped table-hover">
             <thead class="text-nowrap">
                 <tr>
-                    @if (auth()->user()->role_id != 3)
+                    {{-- @if (auth()->user()->role_id != 3)
                         <th class="w-1">
                             <input type="checkbox" wire:model.live='bulkSelectAll' class="form-check-input m-0 align-middle">
                         </th>
-                    @endif
+                    @endif --}}
                     <th class="w-1">No.</th>
                     <th>Thumbnail</th>
                     <th class="w-25">
                         <span class="d-inline-block py-1">Judul</span>
-                        <span x-on:click="$dispatch('sort-by', { columnName: 'title' })" class="float-end" style="padding-top: 1.5px"
+                        {{-- <span x-on:click="$dispatch('sort-by', { columnName: 'title' })" class="float-end" style="padding-top: 1.5px"
                             role="button">
                             @if ($sortColumn == 'title' && $sortDirection == 'desc')
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down" width="24"
@@ -125,12 +132,12 @@
                                     <path d="M17 15v-2" />
                                 </svg>
                             @endif
-                        </span>
+                        </span> --}}
                     </th>
                     <th>Durasi Baca</th>
                     <th>
                         <span class="d-inline-block py-1">Author</span>
-                        <span x-on:click="$dispatch('sort-by', { columnName: 'name' })" class="float-end" style="padding-top: 1.5px"
+                        {{-- <span x-on:click="$dispatch('sort-by', { columnName: 'name' })" class="float-end" style="padding-top: 1.5px"
                             role="button">
                             @if ($sortColumn == 'name' && $sortDirection == 'desc')
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
@@ -173,11 +180,11 @@
                                     <path d="M17 15v-2" />
                                 </svg>
                             @endif
-                        </span>
+                        </span> --}}
                     </th>
                     <th>
                         <span class="d-inline-block py-1">Waktu dibuat</span>
-                        <span x-on:click="$dispatch('sort-by', { columnName: 'created_at' })" class="float-end" style="padding-top: 1.5px"
+                        {{-- <span x-on:click="$dispatch('sort-by', { columnName: 'created_at' })" class="float-end" style="padding-top: 1.5px"
                             role="button">
                             @if ($sortColumn == 'created_at' && $sortDirection == 'desc')
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
@@ -220,12 +227,12 @@
                                     <path d="M17 15v-2" />
                                 </svg>
                             @endif
-                        </span>
+                        </span> --}}
                     </th>
                     @if (auth()->user()->role_id != 3)
                         <th>
                             <span class="d-inline-block py-1">DiPublish ?</span>
-                            <span x-on:click="$dispatch('sort-by', { columnName: 'is_published' })" class="float-end"
+                            {{-- <span x-on:click="$dispatch('sort-by', { columnName: 'is_published' })" class="float-end"
                                 style="padding-top: 1.5px" role="button">
                                 @if ($sortColumn == 'is_published' && $sortDirection == 'desc')
                                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
@@ -268,7 +275,7 @@
                                         <path d="M17 15v-2" />
                                     </svg>
                                 @endif
-                            </span>
+                            </span> --}}
                         </th>
                     @endif
                     @if (auth()->user()->role_id != 3)
@@ -279,12 +286,12 @@
             <tbody>
                 @forelse ($this->sumselNews as $sumselNews)
                     <tr wire:key='{{ $sumselNews->id }}'>
-                        @if (auth()->user()->role_id != 3)
+                        {{-- @if (auth()->user()->role_id != 3)
                             <td>
                                 <input type="checkbox" wire:model.live='bulkSelected' class="form-check-input m-0 align-middle"
                                     value="{{ $sumselNews->id }}">
                             </td>
-                        @endif
+                        @endif --}}
                         <th class="text-muted">
                             {{ ($this->sumselNews->currentPage() - 1) * $this->sumselNews->perPage() + $loop->iteration }}
                         </th>
@@ -341,11 +348,13 @@
             </tbody>
         </table>
     </div>
-    @if (method_exists($this->sumselNews, 'hasPages'))
-        @if ($this->sumselNews->hasPages())
-            <div class="card-footer py-2">
-                {{ $this->sumselNews->links() }}
-            </div>
+    <div wire:loading.class='invisible'>
+        @if (method_exists($this->sumselNews, 'hasPages'))
+            @if ($this->sumselNews->hasPages())
+                <div class="card-footer py-2">
+                    {{ $this->sumselNews->links() }}
+                </div>
+            @endif
         @endif
-    @endif
+    </div>
 </div>

@@ -7,6 +7,7 @@ use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Models\FamilyActivity;
 use Illuminate\Database\Eloquent\Builder;
+use Livewire\Attributes\Computed;
 use RalphJSmit\Livewire\Urls\Facades\Url as LivewireUrl;
 
 class FamilyActivityIndex extends Component

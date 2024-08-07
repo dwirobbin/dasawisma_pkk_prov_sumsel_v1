@@ -19,7 +19,7 @@
                 data
             </label>
         </div>
-        @if (auth()->user()->role->id !== 3)
+        {{-- @if (auth()->user()->role->id !== 3)
             <div class="text-muted">
                 <div class="dropdown-center btn-group" x-data="{ open: false }" x-on:click.outside="open = false">
                     <button x-on:click="open = !open" :class="{ 'show': open == true }" class="btn btn-info dropdown-toggle"
@@ -52,10 +52,10 @@
                     </ul>
                 </div>
             </div>
-        @endif
+        @endif --}}
         <div class="text-muted">
             <div class="input-icon">
-                <input type="text" wire:model.live='search' class="form-control" placeholder="Cari...">
+                <input type="text" wire:model.live.debounce.300ms='search' class="form-control" placeholder="Cari...">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                         stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -125,203 +125,206 @@
         </div>
     </div>
 
-    <div class="table-responsive">
+    <div wire:loading.delay class="container">
+        <div class="text-center mt-2">
+            <span wire:loading role="status" class="spinner-border spinner-border-sm"></span>&ensp;
+            <span wire:loading role="status">Memuat..</span>
+        </div>
+    </div>
+
+    <div wire:loading.class='invisible' class="table-responsive">
         <table class="table table-vcenter card-table table-striped table-hover">
             <thead>
                 <tr>
-                    @if (auth()->user()->role->id !== 3)
+                    {{-- @if (auth()->user()->role->id !== 3)
                         <th class="w-1">
                             <input type="checkbox" wire:model.live='bulkSelectAll' class="form-check-input m-0 align-middle">
                         </th>
-                    @endif
+                    @endif --}}
                     <th>No.</th>
-                    <th x-on:click="$dispatch('sort-by', { columnName: 'dsw.name' })" role="button">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <span class="d-inline-block py-1">Dasawisma</span>
-                            <span class="float-end" style="padding-top: 1.5px">
-                                @if ($sortColumn == 'dsw.name' && $sortDirection == 'desc')
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M17 3v6" />
-                                        <path d="M10 18l-3 3l-3 -3" />
-                                        <path d="M7 21v-18" />
-                                        <path d="M20 6l-3 -3l-3 3" />
-                                        <path d="M17 21v-2" />
-                                        <path d="M17 15v-2" />
-                                    </svg>
-                                @elseif ($sortColumn == 'dsw.name' && $sortDirection == 'asc')
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-up"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M7 21v-6" />
-                                        <path d="M20 6l-3 -3l-3 3" />
-                                        <path d="M17 3v18" />
-                                        <path d="M10 18l-3 3l-3 -3" />
-                                        <path d="M7 3v2" />
-                                        <path d="M7 9v2" />
-                                    </svg>
-                                @else
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M10 18l-3 3l-3 -3" />
-                                        <path d="M7 5v-2" />
-                                        <path d="M7 11v-2" />
-                                        <path d="M7 15v6" />
+                    <th>
+                        <span class="d-inline-block py-1">Dasawisma</span>
+                        {{-- <span x-on:click="$dispatch('sort-by', { columnName: 'dsw.name' })" class="float-end" style="padding-top: 1.5px"
+                            role="button">
+                            @if ($sortColumn == 'dsw.name' && $sortDirection == 'desc')
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down" width="24"
+                                    height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M17 3v6" />
+                                    <path d="M10 18l-3 3l-3 -3" />
+                                    <path d="M7 21v-18" />
+                                    <path d="M20 6l-3 -3l-3 3" />
+                                    <path d="M17 21v-2" />
+                                    <path d="M17 15v-2" />
+                                </svg>
+                            @elseif ($sortColumn == 'dsw.name' && $sortDirection == 'asc')
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-up" width="24"
+                                    height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M7 21v-6" />
+                                    <path d="M20 6l-3 -3l-3 3" />
+                                    <path d="M17 3v18" />
+                                    <path d="M10 18l-3 3l-3 -3" />
+                                    <path d="M7 3v2" />
+                                    <path d="M7 9v2" />
+                                </svg>
+                            @else
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down" width="24"
+                                    height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M10 18l-3 3l-3 -3" />
+                                    <path d="M7 5v-2" />
+                                    <path d="M7 11v-2" />
+                                    <path d="M7 15v6" />
 
-                                        <path d="M20 6l-3 -3l-3 3" />
-                                        <path d="M17 3v6" />
-                                        <path d="M17 21v-2" />
-                                        <path d="M17 15v-2" />
-                                    </svg>
-                                @endif
-                            </span>
-                        </div>
+                                    <path d="M20 6l-3 -3l-3 3" />
+                                    <path d="M17 3v6" />
+                                    <path d="M17 21v-2" />
+                                    <path d="M17 15v-2" />
+                                </svg>
+                            @endif
+                        </span> --}}
                     </th>
-                    <th x-on:click="$dispatch('sort-by', { columnName: 'area' })" role="button">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <span class="d-inline-block py-1">Wilayah</span>
-                            <span class="float-end" style="padding-top: 1.5px">
-                                @if ($sortColumn == 'area' && $sortDirection == 'desc')
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M17 3v6" />
-                                        <path d="M10 18l-3 3l-3 -3" />
-                                        <path d="M7 21v-18" />
-                                        <path d="M20 6l-3 -3l-3 3" />
-                                        <path d="M17 21v-2" />
-                                        <path d="M17 15v-2" />
-                                    </svg>
-                                @elseif ($sortColumn == 'area' && $sortDirection == 'asc')
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-up"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M7 21v-6" />
-                                        <path d="M20 6l-3 -3l-3 3" />
-                                        <path d="M17 3v18" />
-                                        <path d="M10 18l-3 3l-3 -3" />
-                                        <path d="M7 3v2" />
-                                        <path d="M7 9v2" />
-                                    </svg>
-                                @else
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M10 18l-3 3l-3 -3" />
-                                        <path d="M7 5v-2" />
-                                        <path d="M7 11v-2" />
-                                        <path d="M7 15v6" />
+                    <th>
+                        <span class="d-inline-block py-1">Wilayah</span>
+                        {{-- <span x-on:click="$dispatch('sort-by', { columnName: 'area' })" class="float-end" style="padding-top: 1.5px"
+                            role="button">
+                            @if ($sortColumn == 'area' && $sortDirection == 'desc')
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M17 3v6" />
+                                    <path d="M10 18l-3 3l-3 -3" />
+                                    <path d="M7 21v-18" />
+                                    <path d="M20 6l-3 -3l-3 3" />
+                                    <path d="M17 21v-2" />
+                                    <path d="M17 15v-2" />
+                                </svg>
+                            @elseif ($sortColumn == 'area' && $sortDirection == 'asc')
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-up" width="24"
+                                    height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M7 21v-6" />
+                                    <path d="M20 6l-3 -3l-3 3" />
+                                    <path d="M17 3v18" />
+                                    <path d="M10 18l-3 3l-3 -3" />
+                                    <path d="M7 3v2" />
+                                    <path d="M7 9v2" />
+                                </svg>
+                            @else
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M10 18l-3 3l-3 -3" />
+                                    <path d="M7 5v-2" />
+                                    <path d="M7 11v-2" />
+                                    <path d="M7 15v6" />
 
-                                        <path d="M20 6l-3 -3l-3 3" />
-                                        <path d="M17 3v6" />
-                                        <path d="M17 21v-2" />
-                                        <path d="M17 15v-2" />
-                                    </svg>
-                                @endif
-                            </span>
-                        </div>
+                                    <path d="M20 6l-3 -3l-3 3" />
+                                    <path d="M17 3v6" />
+                                    <path d="M17 21v-2" />
+                                    <path d="M17 15v-2" />
+                                </svg>
+                            @endif
+                        </span> --}}
                     </th>
-                    <th x-on:click="$dispatch('sort-by', { columnName: 'dsw.rt' })" role="button">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <span class="d-inline-block py-1">RT</span>
-                            <span class="float-end" style="padding-top: 1.5px">
-                                @if ($sortColumn == 'dsw.rt' && $sortDirection == 'desc')
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M17 3v6" />
-                                        <path d="M10 18l-3 3l-3 -3" />
-                                        <path d="M7 21v-18" />
-                                        <path d="M20 6l-3 -3l-3 3" />
-                                        <path d="M17 21v-2" />
-                                        <path d="M17 15v-2" />
-                                    </svg>
-                                @elseif ($sortColumn == 'dsw.rt' && $sortDirection == 'asc')
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-up"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M7 21v-6" />
-                                        <path d="M20 6l-3 -3l-3 3" />
-                                        <path d="M17 3v18" />
-                                        <path d="M10 18l-3 3l-3 -3" />
-                                        <path d="M7 3v2" />
-                                        <path d="M7 9v2" />
-                                    </svg>
-                                @else
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M10 18l-3 3l-3 -3" />
-                                        <path d="M7 5v-2" />
-                                        <path d="M7 11v-2" />
-                                        <path d="M7 15v6" />
+                    <th>
+                        <span class="d-inline-block py-1">RT</span>
+                        {{-- <span x-on:click="$dispatch('sort-by', { columnName: 'dsw.rt' })" class="float-end" style="padding-top: 1.5px"
+                            role="button">
+                            @if ($sortColumn == 'dsw.rt' && $sortDirection == 'desc')
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M17 3v6" />
+                                    <path d="M10 18l-3 3l-3 -3" />
+                                    <path d="M7 21v-18" />
+                                    <path d="M20 6l-3 -3l-3 3" />
+                                    <path d="M17 21v-2" />
+                                    <path d="M17 15v-2" />
+                                </svg>
+                            @elseif ($sortColumn == 'dsw.rt' && $sortDirection == 'asc')
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-up" width="24"
+                                    height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M7 21v-6" />
+                                    <path d="M20 6l-3 -3l-3 3" />
+                                    <path d="M17 3v18" />
+                                    <path d="M10 18l-3 3l-3 -3" />
+                                    <path d="M7 3v2" />
+                                    <path d="M7 9v2" />
+                                </svg>
+                            @else
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M10 18l-3 3l-3 -3" />
+                                    <path d="M7 5v-2" />
+                                    <path d="M7 11v-2" />
+                                    <path d="M7 15v6" />
 
-                                        <path d="M20 6l-3 -3l-3 3" />
-                                        <path d="M17 3v6" />
-                                        <path d="M17 21v-2" />
-                                        <path d="M17 15v-2" />
-                                    </svg>
-                                @endif
-                            </span>
-                        </div>
+                                    <path d="M20 6l-3 -3l-3 3" />
+                                    <path d="M17 3v6" />
+                                    <path d="M17 21v-2" />
+                                    <path d="M17 15v-2" />
+                                </svg>
+                            @endif
+                        </span> --}}
                     </th>
-                    <th x-on:click="$dispatch('sort-by', { columnName: 'dsw.rw' })" role="button">
-                        <div class="d-flex align-items-center justify-content-between">
-                            <span class="d-inline-block py-1">RW</span>
-                            <span class="float-end" style="padding-top: 1.5px">
-                                @if ($sortColumn == 'dsw.rw' && $sortDirection == 'desc')
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M17 3v6" />
-                                        <path d="M10 18l-3 3l-3 -3" />
-                                        <path d="M7 21v-18" />
-                                        <path d="M20 6l-3 -3l-3 3" />
-                                        <path d="M17 21v-2" />
-                                        <path d="M17 15v-2" />
-                                    </svg>
-                                @elseif ($sortColumn == 'dsw.rw' && $sortDirection == 'asc')
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-up"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M7 21v-6" />
-                                        <path d="M20 6l-3 -3l-3 3" />
-                                        <path d="M17 3v18" />
-                                        <path d="M10 18l-3 3l-3 -3" />
-                                        <path d="M7 3v2" />
-                                        <path d="M7 9v2" />
-                                    </svg>
-                                @else
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                        <path d="M10 18l-3 3l-3 -3" />
-                                        <path d="M7 5v-2" />
-                                        <path d="M7 11v-2" />
-                                        <path d="M7 15v6" />
+                    <th>
+                        <span class="d-inline-block py-1">RW</span>
+                        {{-- <span x-on:click="$dispatch('sort-by', { columnName: 'dsw.rw' })" class="float-end" style="padding-top: 1.5px"
+                            role="button">
+                            @if ($sortColumn == 'dsw.rw' && $sortDirection == 'desc')
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M17 3v6" />
+                                    <path d="M10 18l-3 3l-3 -3" />
+                                    <path d="M7 21v-18" />
+                                    <path d="M20 6l-3 -3l-3 3" />
+                                    <path d="M17 21v-2" />
+                                    <path d="M17 15v-2" />
+                                </svg>
+                            @elseif ($sortColumn == 'dsw.rw' && $sortDirection == 'asc')
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-up" width="24"
+                                    height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M7 21v-6" />
+                                    <path d="M20 6l-3 -3l-3 3" />
+                                    <path d="M17 3v18" />
+                                    <path d="M10 18l-3 3l-3 -3" />
+                                    <path d="M7 3v2" />
+                                    <path d="M7 9v2" />
+                                </svg>
+                            @else
+                                <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
+                                    width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M10 18l-3 3l-3 -3" />
+                                    <path d="M7 5v-2" />
+                                    <path d="M7 11v-2" />
+                                    <path d="M7 15v6" />
 
-                                        <path d="M20 6l-3 -3l-3 3" />
-                                        <path d="M17 3v6" />
-                                        <path d="M17 21v-2" />
-                                        <path d="M17 15v-2" />
-                                    </svg>
-                                @endif
-                            </span>
-                        </div>
+                                    <path d="M20 6l-3 -3l-3 3" />
+                                    <path d="M17 3v6" />
+                                    <path d="M17 21v-2" />
+                                    <path d="M17 15v-2" />
+                                </svg>
+                            @endif
+                        </span> --}}
                     </th>
                     @if (auth()->user()->role->id !== 3)
                         <th class="w-1">
@@ -333,12 +336,12 @@
             <tbody>
                 @forelse ($this->dasawismas as $dasawisma)
                     <tr wire:key='{{ $dasawisma->id }}'>
-                        @if (auth()->user()->role->id !== 3)
+                        {{-- @if (auth()->user()->role->id !== 3)
                             <td>
                                 <input type="checkbox" wire:model.live='bulkSelected' class="form-check-input m-0 align-middle"
                                     value="{{ $dasawisma->id }}">
                             </td>
-                        @endif
+                        @endif --}}
                         <th class="text-muted">
                             {{ ($this->dasawismas->currentPage() - 1) * $this->dasawismas->perPage() + $loop->iteration }}
                         </th>
@@ -388,11 +391,13 @@
             </tbody>
         </table>
     </div>
-    @if (method_exists($this->dasawismas, 'hasPages'))
-        @if ($this->dasawismas->hasPages())
-            <div class="card-footer py-2">
-                {{ $this->dasawismas->links() }}
-            </div>
+    <div wire:loading.class='invisible'>
+        @if (method_exists($this->dasawismas, 'hasPages'))
+            @if ($this->dasawismas->hasPages())
+                <div class="card-footer py-2">
+                    {{ $this->dasawismas->links() }}
+                </div>
+            @endif
         @endif
-    @endif
+    </div>
 </div>

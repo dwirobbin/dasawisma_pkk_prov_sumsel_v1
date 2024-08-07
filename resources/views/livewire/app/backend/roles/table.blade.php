@@ -19,7 +19,7 @@
                 data
             </label>
         </div>
-        <div class="text-muted">
+        {{-- <div class="text-muted">
             <div class="dropdown-center btn-group" x-data="{ open: false }" x-on:click.outside="open = false">
                 <button x-on:click="open = !open" :class="{ 'show': open == true }" class="btn btn-info dropdown-toggle"
                     @disabled($bulkSelectedDisabled) wire:loading.attr="disabled">
@@ -49,10 +49,10 @@
                     </li>
                 </ul>
             </div>
-        </div>
+        </div> --}}
         <div class="text-muted">
             <div class="input-icon">
-                <input type="text" wire:model.live='search' class="form-control" placeholder="Cari...">
+                <input type="text" wire:model.live.debounce.300ms='search' class="form-control" placeholder="Cari...">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                         stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" wire:loading.remove
@@ -68,17 +68,24 @@
         </div>
     </div>
 
-    <div class="table-responsive">
+    <div wire:loading.delay class="container">
+        <div class="text-center mt-2">
+            <span wire:loading role="status" class="spinner-border spinner-border-sm"></span>&ensp;
+            <span wire:loading role="status">Memuat..</span>
+        </div>
+    </div>
+
+    <div wire:loading.class='invisible' class="table-responsive">
         <table class="table table-vcenter card-table table-striped table-hover">
             <thead class="text-nowrap">
                 <tr>
-                    <th class="w-6">
+                    {{-- <th class="w-6">
                         <input type="checkbox" wire:model.live='bulkSelectAll' class="form-check-input m-0 align-middle">
-                    </th>
+                    </th> --}}
                     <th class="w-7">No.</th>
                     <th>
-                        <span class="d-inline-block py-1">Nama Role</span>
-                        <span x-on:click="$dispatch('sort-by', { columnName: 'name' })" class="float-end" style="padding-top: 1.5px"
+                        <span class="d-inline-block py-1">Role</span>
+                        {{-- <span x-on:click="$dispatch('sort-by', { columnName: 'name' })" class="float-end" style="padding-top: 1.5px"
                             role="button">
                             @if ($sortColumn == 'name' && $sortDirection == 'desc')
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down" width="24"
@@ -120,12 +127,12 @@
                                     <path d="M17 15v-2" />
                                 </svg>
                             @endif
-                        </span>
+                        </span> --}}
                     </th>
                     <th>Jumlah Permission</th>
                     <th>
                         <span class="d-inline-block py-1">Waktu dibuat</span>
-                        <span x-on:click="$dispatch('sort-by', { columnName: 'created_at' })" class="float-end" style="padding-top: 1.5px"
+                        {{-- <span x-on:click="$dispatch('sort-by', { columnName: 'created_at' })" class="float-end" style="padding-top: 1.5px"
                             role="button">
                             @if ($sortColumn == 'created_at' && $sortDirection == 'desc')
                                 <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrows-transfer-down"
@@ -168,7 +175,7 @@
                                     <path d="M17 15v-2" />
                                 </svg>
                             @endif
-                        </span>
+                        </span> --}}
                     </th>
                     <th class="w-1">Aksi</th>
                 </tr>
@@ -176,10 +183,10 @@
             <tbody>
                 @forelse ($this->roles as $role)
                     <tr wire:key='{{ $role->id }}'>
-                        <td>
+                        {{-- <td>
                             <input type="checkbox" wire:model.live='bulkSelected' class="form-check-input m-0 align-middle"
                                 value="{{ $role->id }}">
-                        </td>
+                        </td> --}}
                         <th class="text-muted">
                             {{ ($this->roles->currentPage() - 1) * $this->roles->perPage() + $loop->iteration }}
                         </th>
@@ -191,9 +198,9 @@
                         <td>
                             <div class="btn-list flex-nowrap">
                                 <a wire:navigate href="{{ route('area.roles.edit', $role->slug) }}" class="form-selectgroup-label bg-warning">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit text-white"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-edit text-white" width="24"
+                                        height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                         <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1"></path>
                                         <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z"></path>
@@ -202,9 +209,9 @@
                                 </a>
                                 <a x-on:click="$dispatch('delete-confirm', { id: {{ $role->id }}, name: '{{ $role->name }}' })"
                                     class="form-selectgroup-label bg-danger" role="button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash text-white"
-                                        width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-trash text-white" width="24"
+                                        height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"
+                                        stroke-linecap="round" stroke-linejoin="round">
                                         <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
                                         <path d="M4 7l16 0"></path>
                                         <path d="M10 11l0 6"></path>
@@ -224,11 +231,13 @@
             </tbody>
         </table>
     </div>
-    @if (method_exists($this->roles, 'hasPages'))
-        @if ($this->roles->hasPages())
-            <div class="card-footer py-2">
-                {{ $this->roles->links() }}
-            </div>
+    <div wire:loading.class='invisible'>
+        @if (method_exists($this->roles, 'hasPages'))
+            @if ($this->roles->hasPages())
+                <div class="card-footer py-2">
+                    {{ $this->roles->links() }}
+                </div>
+            @endif
         @endif
-    @endif
+    </div>
 </div>

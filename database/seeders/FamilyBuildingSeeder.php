@@ -27,7 +27,7 @@ class FamilyBuildingSeeder extends Seeder
         ];
         $houseCriteriaLists = ['Sehat', 'Kurang Sehat'];
 
-        $totalRecords = 4000000; // Desired total number of records to insert
+        $totalRecords = 1000000; // Desired total number of records to insert
         $recordsPerIteration = 50000; // Number of records to insert per inner loop iteration
         $outerLoopIterations = ceil($totalRecords / $recordsPerIteration); // Calculate number of outer loop iterations
 

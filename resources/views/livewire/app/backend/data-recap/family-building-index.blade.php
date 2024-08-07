@@ -1,5 +1,5 @@
 <div>
-    <div class="card-header py-2 d-flex flex-wrap justify-content-center">
+    <div class="card-header py-2 d-flex flex-wrap justify-content-center justify-content-md-between">
         <div class="text-muted my-1 my-lg-0">
             <label>
                 Lihat
@@ -20,9 +20,9 @@
                 data
             </label>
         </div>
-        <div class="text-muted ms-auto my-1 my-lg-0">
+        {{-- <div class="text-muted ms-auto my-1 my-lg-0">
             <div class="input-icon">
-                <input type="text" wire:model.live='search' class="form-control" placeholder="Cari...">
+                <input type="text" wire:model.live.debounce.300ms='search' class="form-control" placeholder="Cari...">
                 <span class="input-icon-addon">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
                         stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
@@ -32,10 +32,17 @@
                     </svg>
                 </span>
             </div>
+        </div> --}}
+    </div>
+
+    <div wire:loading.delay class="container">
+        <div class="text-center mt-2">
+            <span wire:loading role="status" class="spinner-border spinner-border-sm"></span>&ensp;
+            <span wire:loading role="status">Memuat..</span>
         </div>
     </div>
 
-    <div class="table-responsive">
+    <div wire:loading.class='invisible' class="table-responsive">
         <table class="table table-vcenter card-table table-striped table-hover">
             <thead>
                 <tr>
@@ -183,11 +190,14 @@
             </tbody>
         </table>
     </div>
-    @if (method_exists($data, 'hasPages'))
-        @if ($data->hasPages())
-            <div class="card-footer py-2">
-                {{ $data->links() }}
-            </div>
+
+    <div wire:loading.class='invisible'>
+        @if (method_exists($data, 'hasPages'))
+            @if ($data->hasPages())
+                <div class="card-footer py-2">
+                    {{ $data->links() }}
+                </div>
+            @endif
         @endif
-    @endif
+    </div>
 </div>

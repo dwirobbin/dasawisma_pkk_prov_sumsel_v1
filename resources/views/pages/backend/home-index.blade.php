@@ -37,7 +37,7 @@
                                             </div>
                                             <div class="col">
                                                 <div class="font-weight-medium">
-                                                    {{ $dataCount['users']->users_count }}
+                                                    {{ format_natural_number($dataCount['users']->users_count) }}
                                                 </div>
                                                 <div class="text-muted">
                                                     Users
@@ -66,7 +66,7 @@
                                             </div>
                                             <div class="col">
                                                 <div class="font-weight-medium">
-                                                    {{ $dataCount['dasawismas']->dasawismas_count }}
+                                                    {{ format_natural_number($dataCount['dasawismas']->dasawismas_count) }}
                                                 </div>
                                                 <div class="text-muted">
                                                     Dasawisma
@@ -94,7 +94,7 @@
                                             </div>
                                             <div class="col">
                                                 <div class="font-weight-medium">
-                                                    {{ $dataCount['families']->families_count }}
+                                                    {{ format_natural_number($dataCount['families']->families_count) }}
                                                 </div>
                                                 <div class="text-muted">
                                                     Kepala Keluarga
@@ -125,7 +125,7 @@
                                             </div>
                                             <div class="col">
                                                 <div class="font-weight-medium">
-                                                    {{ $dataCount['family_members']->family_members_count }}
+                                                    {{ format_natural_number($dataCount['family_members']->family_members_count) }}
                                                 </div>
                                                 <div class="text-muted">
                                                     Anggota Keluarga
