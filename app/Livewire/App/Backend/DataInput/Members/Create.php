@@ -12,11 +12,11 @@ use App\Models\FamilyBuilding;
 use App\Models\FamilySizeMember;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule as ValidationRule;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Database\Eloquent\Collection;
 
 class Create extends Component
 {
-    public ?EloquentCollection $dasawismas = NULL;
+    public ?Collection $dasawismas = NULL;
 
     public int $currentStep = 1;
 
@@ -176,14 +176,29 @@ class Create extends Component
                 'family_members.*.name'             => ['required', 'string', 'min:3'],
                 'family_members.*.birth_date'       => ['required', 'string', 'date'],
                 'family_members.*.status'           => ['required', 'string', ValidationRule::in([
-                    'Kepala Keluarga', 'Istri', 'Anak', 'Keluarga', 'Orang Tua',
+                    'Kepala Keluarga',
+                    'Istri',
+                    'Anak',
+                    'Keluarga',
+                    'Orang Tua',
                 ])],
                 'family_members.*.marital_status'   => ['required', 'string', ValidationRule::in([
-                    'Kawin', 'Janda', 'Duda', 'Belum Kawin',
+                    'Kawin',
+                    'Janda',
+                    'Duda',
+                    'Belum Kawin',
                 ])],
                 'family_members.*.gender'           => ['required', 'string', 'in:Laki-laki,Perempuan'],
                 'family_members.*.last_education'   => ['required', 'string', ValidationRule::in([
-                    'TK/PAUD', 'SD/MI', 'SLTP/SMP/MTS', 'SLTA/SMA/MA/SMK', 'Diploma', 'S1', 'S2', 'S3', 'Belum/Tidak Sekolah',
+                    'TK/PAUD',
+                    'SD/MI',
+                    'SLTP/SMP/MTS',
+                    'SLTA/SMA/MA/SMK',
+                    'Diploma',
+                    'S1',
+                    'S2',
+                    'S3',
+                    'Belum/Tidak Sekolah',
                 ])],
                 'family_members.*.profession'       => ['nullable', 'string', 'min:2'],
             ],
@@ -285,9 +300,9 @@ class Create extends Component
         } catch (\Throwable) {
             $this->reset();
             flasher_fail('Terjadi suatu kesalahan.');
-        } finally {
-            $this->redirect(route('area.data-input.member.index'), true);
         }
+
+        $this->redirect(route('area.data-input.member.index'), true);
     }
 
     private function multiImplode(array $array, string $glue)

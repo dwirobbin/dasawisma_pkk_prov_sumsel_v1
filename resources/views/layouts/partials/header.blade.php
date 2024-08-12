@@ -144,17 +144,19 @@
                                                     User
                                                 </a>
                                             @endcan
-                                            @if ((auth()->user()->admin->province_id === null || auth()->user()->admin->province_id !== null) && auth()->user()->admin->regency_id === null)
-                                                <a wire:navigate href="{{ route('area.roles.index') }}"
-                                                    class="dropdown-item @if (request()->routeIs('area.roles.*')) active @endif">
-                                                    Role
-                                                </a>
-                                            @endif
-                                            @if ((auth()->user()->admin->province_id === null || auth()->user()->admin->province_id !== null) && auth()->user()->admin->regency_id === null)
-                                                <a wire:navigate href="{{ route('area.permissions.index') }}"
-                                                    class="dropdown-item @if (request()->routeIs('area.permissions.*')) active @endif">
-                                                    Permission
-                                                </a>
+                                            @if (isset(auth()->user()->admin->province_id) || auth()->user()->role_id === 1)
+                                                @if (
+                                                    (auth()->user()->admin?->province_id === null || auth()->user()->admin?->province_id !== null) &&
+                                                        auth()->user()?->admin->regency_id === null)
+                                                    <a wire:navigate href="{{ route('area.roles.index') }}"
+                                                        class="dropdown-item @if (request()->routeIs('area.roles.*')) active @endif">
+                                                        Role
+                                                    </a>
+                                                    <a wire:navigate href="{{ route('area.permissions.index') }}"
+                                                        class="dropdown-item @if (request()->routeIs('area.permissions.*')) active @endif">
+                                                        Permission
+                                                    </a>
+                                                @endif
                                             @endif
                                         </div>
                                     </div>

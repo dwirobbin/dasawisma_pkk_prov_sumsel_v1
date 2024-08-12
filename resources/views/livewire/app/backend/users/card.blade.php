@@ -5,52 +5,15 @@
             <label>
                 Tampil
                 <select class="d-inline-block form-select w-auto" wire:model.live='perPage'>
-                    <option value="4">4</option>
-                    <option value="12">12</option>
-                    <option value="24">24</option>
-                    <option value="44">45</option>
-                    <option value="68">69</option>
-                    <option value="88">87</option>
-                    @if (count($this->users))
-                        <option value="{{ $this->users->total() }}">Semua</option>
-                    @endif
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="30">30</option>
+                    <option value="50">50</option>
+                    <option value="80">80</option>
+                    <option value="100">100</option>
                 </select>
             </label>
         </div>
-        {{-- <div class="text-muted">
-            <ul class="nav nav-pills card-header-pills">
-                <li class="nav-item">
-                    <button class="nav-link {{ $sortDirection === 'desc' ? 'active' : '' }}" wire:click="setSort('desc')">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon nav-link-icon icon-tabler icon-tabler-sort-ascending" width="24"
-                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M4 6l7 0"></path>
-                            <path d="M4 12l7 0"></path>
-                            <path d="M4 18l9 0"></path>
-                            <path d="M15 9l3 -3l3 3"></path>
-                            <path d="M18 6l0 12"></path>
-                        </svg>
-                        Latest
-                    </button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link {{ $sortDirection === 'asc' ? 'active' : '' }}" wire:click="setSort('asc')">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon nav-link-icon icon-tabler icon-tabler-sort-descending" width="24"
-                            height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                            <path d="M4 6l9 0"></path>
-                            <path d="M4 12l7 0"></path>
-                            <path d="M4 18l7 0"></path>
-                            <path d="M15 15l3 3l3 -3"></path>
-                            <path d="M18 6l0 12"></path>
-                        </svg>
-                        Oldest
-                    </button>
-                </li>
-            </ul>
-        </div> --}}
         <div class="text-muted">
             <div class="input-icon">
                 <input type="text" wire:model.live.debounce.300ms='search' class="form-control" placeholder="Cari...">
@@ -62,7 +25,6 @@
                         <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0" />
                         <path d="M21 21l-6 -6" />
                     </svg>
-
                     <span class="spinner-border spinner-border-sm" wire:loading wire:target='search' role="status"></span>
                 </span>
             </div>
@@ -148,8 +110,8 @@
     <div wire:loading.class='invisible'>
         @if (method_exists($this->users, 'hasPages'))
             @if ($this->users->hasPages())
-                <div class="card-footer pt-1 pb-2 px-3">
-                    {{ $this->users->links() }}
+                <div class="card-footer py-2 d-flex justify-content-center align-items-center">
+                    {{ $this->users->links('paginations.custom-simple-pagination-links') }}
                 </div>
             @endif
         @endif

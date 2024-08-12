@@ -1,4 +1,4 @@
-<div x-data="editData" class="card">
+<div class="card">
     <div class="card-body pt-4">
         <div class="row">
             <div class="col-12">
@@ -53,31 +53,7 @@
         </div>
     </div>
 
-    <div class="card-footer text-end">
-        <div class="d-flex">
-            <button type="button" wire:click='resetForm' x-on:click='reset' class="btn btn-danger">Reset</button>
-            <button type="button" wire:click='saveChange' class="btn btn-primary ms-auto">Simpan Perubahan</button>
-        </div>
+    <div class="card-footer">
+        <button type="button" wire:click='saveChange' class="btn btn-primary ms-auto">Simpan Perubahan</button>
     </div>
 </div>
-
-@script
-    <script>
-        Alpine.data('editData', () => {
-            const oldData = {
-                name: $wire.form.name,
-                permissions: @json($form->permissions),
-            };
-
-            return {
-                reset() {
-                    let data = [];
-                    oldData.permissions.forEach(val => data.push(val));
-
-                    @this.set('form.name', oldData.name);
-                    @this.set('form.permissions', data);
-                }
-            }
-        })
-    </script>
-@endscript

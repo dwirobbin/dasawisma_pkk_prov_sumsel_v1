@@ -13,13 +13,13 @@ use Illuminate\Contracts\View\View;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Database\Eloquent\Collection;
 
 class Create extends Component
 {
     use WithFileUploads;
 
-    public EloquentCollection|array $roles = [], $provinces = [], $regencies = [], $districts = [], $villages = [];
+    public Collection|array $roles = [], $provinces = [], $regencies = [], $districts = [], $villages = [];
 
     public string|object|null $photo = null;
     public ?string $name = null, $username = null, $email = null, $phone_number = null, $role_id = null;
@@ -141,15 +141,8 @@ class Create extends Component
             flasher_success('User baru berhasil ditambahkan.');
         } catch (\Throwable) {
             flasher_fail('Terjadi suatu kesalahan.');
-        } finally {
-            $this->redirectRoute('area.users.index', navigate: true);
         }
-    }
 
-    public function resetValidationMessage(): void
-    {
-        $this->clearValidation();
-
-        flasher_success('Form Berhasil direset');
+        $this->redirectRoute('area.users.index', navigate: true);
     }
 }

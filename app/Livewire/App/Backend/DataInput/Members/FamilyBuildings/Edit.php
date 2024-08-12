@@ -89,9 +89,9 @@ class Edit extends Component
             flasher_success('Data berhasil diperbaharui.');
         } catch (\Throwable) {
             flasher_fail('Terjadi suatu kesalahan.');
-        } finally {
-            $this->redirect(route('area.data-input.member.index'), true);
         }
+
+        $this->redirect(route('area.data-input.member.index'), true);
     }
 
     public function resetForm()

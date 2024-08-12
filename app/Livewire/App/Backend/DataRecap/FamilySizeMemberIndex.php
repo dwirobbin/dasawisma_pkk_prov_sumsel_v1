@@ -34,11 +34,6 @@ class FamilySizeMemberIndex extends Component
         return view('placeholder');
     }
 
-    public function paginationView(): string
-    {
-        return 'paginations.custom-pagination-links';
-    }
-
     public function render()
     {
         $param = match (true) {
@@ -48,6 +43,8 @@ class FamilySizeMemberIndex extends Component
             str_contains($this->currentUrl, '/area-code') && strlen($this->param) == 10 => $this->param,
             default => 'dasawisma'
         };
+
+        $user = auth()->user();
 
         $familySizeMembers = FamilySizeMember::query()
             ->selectRaw("
@@ -109,13 +106,19 @@ class FamilySizeMemberIndex extends Component
                     ->groupBy('family_heads.id')
                     ->orderBy('family_size_members.family_head_id', 'ASC');
             })
-            ->when(
-                auth()->user()->role_id == 2 && auth()->user()->admin->regency_id != NULL,
-                function (Builder $query) {
-                    $query->where('dasawismas.regency_id', '=', auth()->user()->admin->regency_id);
-                }
-            )
-            ->paginate($this->perPage);
+            ->when($user->role_id == 2 && $user->admin->village_id != NULL, function (Builder $query) use ($user) {
+                $query->where('dasawismas.village_id', '=', $user->admin->village_id);
+            })
+            ->when($user->role_id == 2 && $user->admin->district_id != NULL, function (Builder $query) use ($user) {
+                $query->where('dasawismas.district_id', '=', $user->admin->district_id);
+            })
+            ->when($user->role_id == 2 && $user->admin->regency_id != NULL, function (Builder $query) use ($user) {
+                $query->where('dasawismas.regency_id', '=', $user->admin->regency_id);
+            })
+            ->when($user->role_id == 2 && $user->admin->province_id != NULL, function (Builder $query) use ($user) {
+                $query->where('dasawismas.province_id', '=', $user->admin->province_id);
+            })
+            ->simplePaginate($this->perPage);
 
         return view('livewire.app.backend.data-recap.family-size-member-index', [
             'data' => $familySizeMembers,

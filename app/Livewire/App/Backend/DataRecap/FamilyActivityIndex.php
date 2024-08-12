@@ -7,7 +7,6 @@ use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Models\FamilyActivity;
 use Illuminate\Database\Eloquent\Builder;
-use Livewire\Attributes\Computed;
 use RalphJSmit\Livewire\Urls\Facades\Url as LivewireUrl;
 
 class FamilyActivityIndex extends Component
@@ -35,11 +34,6 @@ class FamilyActivityIndex extends Component
         return view('placeholder');
     }
 
-    public function paginationView(): string
-    {
-        return 'paginations.custom-pagination-links';
-    }
-
     public function render()
     {
         $param = match (true) {
@@ -49,6 +43,8 @@ class FamilyActivityIndex extends Component
             str_contains($this->currentUrl, '/area-code') && strlen($this->param) == 10 => $this->param,
             default => 'dasawisma'
         };
+
+        $user = auth()->user();
 
         $familyActivities = FamilyActivity::query()
             ->selectRaw("
@@ -110,8 +106,10 @@ class FamilyActivityIndex extends Component
             })
             ->when($param == 'dasawisma', function (Builder $query) {
                 $query->addSelect([
-                    'family_heads.id', 'family_heads.family_head AS name',
-                    'family_activities.up2k_activity', 'family_activities.env_health_activity'
+                    'family_heads.id',
+                    'family_heads.family_head AS name',
+                    'family_activities.up2k_activity',
+                    'family_activities.env_health_activity'
                 ])
                     ->where('dasawismas.slug', '=', $this->param)
                     ->when($this->search != '', function (Builder $query) {
@@ -120,13 +118,19 @@ class FamilyActivityIndex extends Component
                     ->groupBy('family_heads.id')
                     ->orderBy('family_activities.family_head_id', 'ASC');
             })
-            ->when(
-                auth()->user()->role_id == 2 && auth()->user()->admin->regency_id != NULL,
-                function (Builder $query) {
-                    $query->where('dasawismas.regency_id', '=', auth()->user()->admin->regency_id);
-                }
-            )
-            ->paginate($this->perPage);
+            ->when($user->role_id == 2 && $user->admin->village_id != NULL, function (Builder $query) use ($user) {
+                $query->where('dasawismas.village_id', '=', $user->admin->village_id);
+            })
+            ->when($user->role_id == 2 && $user->admin->district_id != NULL, function (Builder $query) use ($user) {
+                $query->where('dasawismas.district_id', '=', $user->admin->district_id);
+            })
+            ->when($user->role_id == 2 && $user->admin->regency_id != NULL, function (Builder $query) use ($user) {
+                $query->where('dasawismas.regency_id', '=', $user->admin->regency_id);
+            })
+            ->when($user->role_id == 2 && $user->admin->province_id != NULL, function (Builder $query) use ($user) {
+                $query->where('dasawismas.province_id', '=', $user->admin->province_id);
+            })
+            ->simplePaginate($this->perPage);
 
         return view('livewire.app.backend.data-recap.family-activity-index', [
             'data' => $familyActivities,

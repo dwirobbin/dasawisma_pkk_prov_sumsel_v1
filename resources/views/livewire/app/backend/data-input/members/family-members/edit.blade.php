@@ -184,8 +184,7 @@
                 </table>
             </div>
         </div>
-        <div class="card-footer d-flex justify-content-between">
-            <button type="button" x-on:click='clear' class="btn btn-danger me-auto">Clear</button>
+        <div class="card-footer">
             <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
         </div>
     </form>

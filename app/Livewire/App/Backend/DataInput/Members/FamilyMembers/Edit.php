@@ -80,14 +80,29 @@ class Edit extends Component
                 'family_members.*.name'             => ['required', 'string', 'min:3'],
                 'family_members.*.birth_date'       => ['required', 'string', 'date'],
                 'family_members.*.status'           => ['required', 'string', ValidationRule::in([
-                    'Kepala Keluarga', 'Istri', 'Anak', 'Keluarga', 'Orang Tua',
+                    'Kepala Keluarga',
+                    'Istri',
+                    'Anak',
+                    'Keluarga',
+                    'Orang Tua',
                 ])],
                 'family_members.*.marital_status'   => ['required', 'string', ValidationRule::in([
-                    'Kawin', 'Janda', 'Duda', 'Belum Kawin',
+                    'Kawin',
+                    'Janda',
+                    'Duda',
+                    'Belum Kawin',
                 ])],
                 'family_members.*.gender'           => ['required', 'string', 'in:Laki-laki,Perempuan'],
                 'family_members.*.last_education'   => ['required', 'string', ValidationRule::in([
-                    'TK/PAUD', 'SD/MI', 'SLTP/SMP/MTS', 'SLTA/SMA/MA/SMK', 'Diploma', 'S1', 'S2', 'S3', 'Belum/Tidak Sekolah',
+                    'TK/PAUD',
+                    'SD/MI',
+                    'SLTP/SMP/MTS',
+                    'SLTA/SMA/MA/SMK',
+                    'Diploma',
+                    'S1',
+                    'S2',
+                    'S3',
+                    'Belum/Tidak Sekolah',
                 ])],
                 'family_members.*.profession'       => ['nullable', 'string', 'min:2'],
             ],
@@ -158,8 +173,8 @@ class Edit extends Component
             flasher_success("Data Anggota Keluarga {$this->family_head} berhasil diperbarui!");
         } catch (\Throwable) {
             flasher_fail('Terjadi suatu kesalahan.');
-        } finally {
-            $this->redirect(route('area.data-input.member.index'), true);
         }
+
+        $this->redirect(route('area.data-input.member.index'), true);
     }
 }

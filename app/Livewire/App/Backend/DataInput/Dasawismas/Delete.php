@@ -34,10 +34,10 @@ class Delete extends Component
                 ->delete();
 
             flasher_success('Data berhasil dihapus.');
-
-            $this->dispatch('refresh-data')->to(Table::class);
         } catch (\Throwable) {
             flasher_fail('Terjadi suatu kesalahan.');
         }
+
+        $this->dispatch('refresh-data')->to(Table::class);
     }
 }

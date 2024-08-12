@@ -41,10 +41,10 @@ class Delete extends Component
             $this->dispatch('refresh-data')->to(Table::class);
         } catch (\Throwable) {
             flasher_fail('Terjadi suatu kesalahan.');
-        } finally {
-            $this->resetForm();
-            $this->dispatch('close-fh-modal');
         }
+
+        $this->resetForm();
+        $this->dispatch('close-fh-modal');
     }
 
     public function resetForm()

@@ -110,9 +110,9 @@ class Edit extends Component
             flasher_success('Data berhasil diperbaharui.');
         } catch (\Throwable $th) {
             flasher_fail($th->getMessage());
-        } finally {
-            $this->redirect(route('area.data-input.member.index'), true);
         }
+
+        $this->redirect(route('area.data-input.member.index'), true);
     }
 
     private function multiImplode(array $array, string $glue)

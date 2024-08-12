@@ -51,8 +51,8 @@ class Delete extends Component
             $this->dispatch('refresh-data')->to(Card::class);
         } catch (\Throwable) {
             flasher_fail('Terjadi suatu kesalahan.');
-        } finally {
-            $this->dispatch('close-modal');
         }
+
+        $this->dispatch('close-modal');
     }
 }

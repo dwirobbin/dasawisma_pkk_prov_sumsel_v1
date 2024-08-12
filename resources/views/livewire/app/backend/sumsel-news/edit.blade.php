@@ -71,32 +71,16 @@
         </div>
     </div>
 
-    <div class="card-footer text-end">
-        <div class="d-flex">
-            <button type="button" wire:click='clear' x-on:click="reset" class="btn btn-danger">Reset</button>
-            <button type="button" wire:click='save' class="btn btn-primary ms-auto">Simpan Perubahan</button>
-        </div>
+    <div class="card-footer">
+        <button type="button" wire:click='save' class="btn btn-primary">Simpan Perubahan</button>
     </div>
 </div>
 
 @script
     <script>
         Alpine.data('form', () => {
-            const defaultImg = $wire.form.image;
-            const defaultBody = $wire.form.body;
-
             return {
                 imageUrl: $wire.form.image,
-
-                reset() {
-                    @this.set('form.title', $wire.form.title);
-                    this.imageUrl = defaultImg;
-                    document.getElementById('imgCover').value = null;
-                    // document.getElementById('text-editor').innerHTML = defaultBody;
-                    // @this.set('form.body', defaultBody);
-                    // tinymce.get('text-area').setContent(defaultBody)
-                    @this.set('form.is_published', $wire.form.is_published);
-                },
 
                 fileChosen(event) {
                     let file = event.target.files[0];

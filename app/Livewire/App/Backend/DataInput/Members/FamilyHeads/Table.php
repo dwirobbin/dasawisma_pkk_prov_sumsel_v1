@@ -8,11 +8,10 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use Livewire\Attributes\Computed;
-use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\Paginator;
 
 class Table extends Component
 {
@@ -30,7 +29,7 @@ class Table extends Component
     public bool $bulkSelectedDisabled = false, $bulkSelectAll = false;
     public $bulkSelected = [];
 
-    public EloquentCollection|array $provinces = [], $regencies = [], $districts = [], $villages = [];
+    public Collection|array $provinces = [], $regencies = [], $districts = [], $villages = [];
 
     public function placeholder(): View
     {
@@ -38,7 +37,7 @@ class Table extends Component
     }
 
     #[Computed()]
-    public function familyHeads(): LengthAwarePaginator|Collection
+    public function familyHeads(): Paginator
     {
         return FamilyHead::from('family_heads AS fh')
             ->selectRaw("
@@ -52,7 +51,7 @@ class Table extends Component
             ->leftJoin('regencies AS r', 'dsw.regency_id', '=', 'r.id')
             ->leftJoin('districts AS d', 'dsw.district_id', '=', 'd.id')
             ->leftJoin('villages AS v', 'dsw.village_id', '=', 'v.id')
-            ->when($this->search != '', fn (Builder $query) => $query->search(trim($this->search)))
+            ->when($this->search != '', fn(Builder $query) => $query->search(trim($this->search)))
             ->when(
                 auth()->user()->role_id == 2 && auth()->user()->admin->district_id != NULL
                     && (auth()->user()->admin->village_id == NULL || auth()->user()->admin->village_id != NULL),
@@ -68,8 +67,12 @@ class Table extends Component
                 }
             )
             ->orderBy($this->sortColumn, $this->sortDirection)
-            ->paginate($this->perPage)
-            ->onEachSide(1);
+            ->simplePaginate($this->perPage);
+    }
+
+    public function updatedPerPage()
+    {
+        $this->resetPage();
     }
 
     public function updatedSearch()
@@ -77,34 +80,9 @@ class Table extends Component
         $this->resetPage();
     }
 
-    public function paginationView(): string
-    {
-        return 'paginations.custom-pagination-links';
-    }
-
     #[On('refresh-data')]
     public function render()
     {
-        $this->bulkSelectedDisabled = count($this->bulkSelected) < 2;
-
-        if (method_exists($this->familyHeads(), 'currentPage')) {
-            ($this->familyHeads()->currentPage() <= $this->familyHeads()->lastPage())
-                ? $this->setPage($this->familyHeads()->currentPage())
-                : $this->setPage($this->familyHeads()->lastPage());
-        }
-
         return view('livewire.app.backend.data-input.members.family-heads.table');
-    }
-
-    #[On('sort-by')]
-    public function sortBy(string $columnName): void
-    {
-        if ($this->sortColumn == $columnName) {
-            $this->sortDirection = $this->sortDirection == 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortDirection = 'asc';
-        }
-
-        $this->sortColumn = $columnName;
     }
 }

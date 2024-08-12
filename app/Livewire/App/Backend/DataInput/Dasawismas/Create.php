@@ -146,10 +146,10 @@ class Create extends Component
             }
         } catch (\Throwable) {
             flasher_fail('Terjadi suatu kesalahan');
-        } finally {
-            $this->resetForm();
-            $this->dispatch('close-modal-create');
         }
+
+        $this->resetForm();
+        $this->dispatch('close-modal-create');
     }
 
     public function resetForm()

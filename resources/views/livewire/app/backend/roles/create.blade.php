@@ -54,10 +54,7 @@
         </div>
     </div>
 
-    <div class="card-footer text-end">
-        <div class="d-flex">
-            <button type="button" wire:click='clear' class="btn btn-danger">Bersihkan</button>
-            <button type="button" wire:click='save' class="btn btn-primary ms-auto">Simpan</button>
-        </div>
+    <div class="card-footer">
+        <button type="button" wire:click='save' class="btn btn-primary ms-auto">Simpan</button>
     </div>
 </div>

@@ -72,11 +72,8 @@
             </div>
         </div>
 
-        <div class="card-footer text-end">
-            <div class="d-flex">
-                <button type="button" wire:click='clear' x-on:click="clear" class="btn btn-danger">Bersihkan</button>
-                <button type="button" wire:click='save' class="btn btn-primary ms-auto" disabled='disabled'>Simpan</button>
-            </div>
+        <div class="card-footer">
+            <button type="button" wire:click='save' class="btn btn-primary" disabled='disabled'>Simpan</button>
         </div>
     </form>
 </div>
@@ -86,16 +83,6 @@
         Alpine.data('form', () => {
             return {
                 imageUrl: '',
-
-                clear() {
-                    $wire.form.title = null;
-                    $wire.form.image = null;
-                    $wire.form.body = null;
-                    $wire.form.is_published = false;
-                    this.imageUrl = '';
-                    document.getElementById('imgCover').value = null;
-                    tinyMCE.activeEditor.setContent('');
-                },
 
                 fileChosen(event) {
                     let file = event.target.files[0];

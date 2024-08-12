@@ -32,13 +32,4 @@ class Edit extends Component
 
         $this->redirectRoute('area.sumsel_news.index', navigate: true);
     }
-
-    public function clear(): void
-    {
-        $this->form->resetData();
-
-        $this->clearValidation();
-
-        flasher_success('Form Berhasil direset.');
-    }
 }

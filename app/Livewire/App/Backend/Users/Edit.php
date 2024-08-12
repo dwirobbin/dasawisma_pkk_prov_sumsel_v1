@@ -17,7 +17,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule as ValidationRule;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Database\Eloquent\Collection;
 
 class Edit extends Component
 {
@@ -26,7 +26,7 @@ class Edit extends Component
     public ?User $user;
     public ?Admin $admin;
 
-    public EloquentCollection|array $roles = [], $provinces = [], $regencies = [], $districts = [], $villages = [];
+    public Collection|array $roles = [], $provinces = [], $regencies = [], $districts = [], $villages = [];
 
     public string|object|null $photo = null;
     public ?string $name = null, $username = null, $email = null, $phone_number = null, $role_id = null;
@@ -139,7 +139,10 @@ class Edit extends Component
             'photo'             => [
                 'nullable',
                 ValidationRule::when(is_object($this->photo), [
-                    'image', 'mimes:jpg,jpeg,png,svg,gif', 'max:2048', 'unique:users,photo,' . $this->user->id
+                    'image',
+                    'mimes:jpg,jpeg,png,svg,gif',
+                    'max:2048',
+                    'unique:users,photo,' . $this->user->id
                 ])
             ],
             'role_id'           => 'required|in:1,2,3',
@@ -212,15 +215,8 @@ class Edit extends Component
             flasher_success('Data berhasil diperbaharui.');
         } catch (\Throwable) {
             flasher_fail('Terjadi suatu kesalahan.');
-        } finally {
-            $this->redirectRoute('area.users.index', navigate: true);
         }
-    }
 
-    public function resetValidationMessage(): void
-    {
-        $this->clearValidation();
-
-        flasher_success('Form berhasil direset.');
+        $this->redirectRoute('area.users.index', navigate: true);
     }
 }

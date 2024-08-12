@@ -75,11 +75,11 @@ class Edit extends Component
             $this->familySizeMember->update($validatedData);
 
             flasher_success('Data berhasil diperbaharui.');
-        } catch (\Throwable $th) {
-            flasher_fail($th->getMessage());
-        } finally {
-            $this->redirect(route('area.data-input.member.index'), true);
+        } catch (\Throwable) {
+            flasher_fail('Terjadi suatu kesalahan.');
         }
+
+        $this->redirect(route('area.data-input.member.index'), true);
     }
 
     public function resetForm()

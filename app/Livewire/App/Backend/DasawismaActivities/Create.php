@@ -26,13 +26,4 @@ class Create extends Component
 
         $this->redirectRoute('area.dasawisma_activity.index', navigate: true);
     }
-
-    public function clear(): void
-    {
-        $this->form->resetForm();
-
-        $this->clearValidation();
-
-        flasher_success('Form Berhasil direset.');
-    }
 }

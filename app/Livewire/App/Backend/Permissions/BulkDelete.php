@@ -39,9 +39,9 @@ class BulkDelete extends Component
             $this->dispatch('refresh-data')->to(Table::class);
         } catch (\Throwable) {
             flasher_fail('Terjadi suatu kesalahan.');
-        } finally {
-            $this->dispatch('clear-selected')->to(Table::class);
-            $this->dispatch('close-modal');
         }
+
+        $this->dispatch('clear-selected')->to(Table::class);
+        $this->dispatch('close-modal');
     }
 }

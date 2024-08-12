@@ -178,8 +178,7 @@
                 </template>
             </div>
         </div>
-        <div class="card-footer d-flex justify-content-between">
-            <button type="button" x-on:click='clear' class="btn btn-danger me-auto">Clear</button>
+        <div class="card-footer">
             <button type="submit" class="btn btn-primary">Simpan</button>
         </div>
     </form>
@@ -190,27 +189,7 @@
         Alpine.data('form', () => {
             return {
                 imageUrl: '',
-                clear() {
-                    this.imageUrl = '';
-                    document.getElementById('photo').value = null;
-                    @this.set('photo', null);
-                    @this.set('name', null);
-                    @this.set('username', null);
-                    @this.set('email', null);
-                    @this.set('phone_number', null);
-                    @this.set('role_id', null);
-                    @this.set('password', null);
-                    @this.set('password_confirmation', null);
-                    @this.set('province_id', null);
-                    @this.set('regency_id', null);
-                    @this.set('district_id', null);
-                    @this.set('village_id', null);
-                    @this.set('roles', []);
-                    @this.set('regencies', []);
-                    @this.set('districts', []);
-                    @this.set('villages', []);
-                    @this.resetValidationMessage();
-                },
+
                 fileChosen(event) {
                     const file = event.target.files[0];
 

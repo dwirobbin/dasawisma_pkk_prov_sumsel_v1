@@ -33,11 +33,4 @@ class Edit extends Component
 
         $this->redirectRoute('area.roles.index', navigate: true);
     }
-
-    public function resetForm(): void
-    {
-        $this->clearValidation();
-
-        flasher_success('Form Berhasil direset.');
-    }
 }

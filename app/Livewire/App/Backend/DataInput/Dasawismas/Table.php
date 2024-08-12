@@ -12,11 +12,10 @@ use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use Livewire\Attributes\Computed;
-use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\Paginator;
 
 class Table extends Component
 {
@@ -31,10 +30,7 @@ class Table extends Component
 
     public string $sortColumn = 'dsw.created_at';
 
-    public bool $bulkSelectedDisabled = false, $bulkSelectAll = false;
-    public $bulkSelected = [];
-
-    public EloquentCollection|array $provinces = [], $regencies = [], $districts = [], $villages = [];
+    public Collection|array $provinces = [], $regencies = [], $districts = [], $villages = [];
     public ?string $provinceId = null, $regencyId = null, $districtId = null, $villageId = null;
 
     public function mount()
@@ -48,7 +44,7 @@ class Table extends Component
     }
 
     #[Computed()]
-    public function dasawismas(): LengthAwarePaginator|Collection
+    public function dasawismas(): Paginator
     {
         return Dasawisma::query()
             ->from('dasawismas AS dsw')
@@ -60,11 +56,11 @@ class Table extends Component
             ->join('regencies AS r', 'dsw.regency_id', '=', 'r.id')
             ->join('districts AS d', 'dsw.district_id', '=', 'd.id')
             ->join('villages AS v', 'dsw.village_id', '=', 'v.id')
-            ->when($this->search != '', fn (Builder $query) => $query->search(trim($this->search)))
-            ->when($this->provinceId != '', fn (Builder $query) => $query->where('dsw.province_id', 'LIKE', "%{$this->provinceId}%"))
-            ->when($this->regencyId != '', fn (Builder $query) => $query->where('dsw.regency_id', '=', $this->regencyId))
-            ->when($this->districtId != '', fn (Builder $query) => $query->where('dsw.district_id', 'LIKE', "%{$this->districtId}%"))
-            ->when($this->villageId != '', fn (Builder $query) => $query->where('dsw.village_id', 'LIKE', "%{$this->villageId}%"))
+            ->when($this->search != '', fn(Builder $query) => $query->search(trim($this->search)))
+            ->when($this->provinceId != '', fn(Builder $query) => $query->where('dsw.province_id', 'LIKE', "%{$this->provinceId}%"))
+            ->when($this->regencyId != '', fn(Builder $query) => $query->where('dsw.regency_id', '=', $this->regencyId))
+            ->when($this->districtId != '', fn(Builder $query) => $query->where('dsw.district_id', 'LIKE', "%{$this->districtId}%"))
+            ->when($this->villageId != '', fn(Builder $query) => $query->where('dsw.village_id', 'LIKE', "%{$this->villageId}%"))
             ->when(
                 auth()->user()->role_id == 2 && auth()->user()->admin->district_id != NULL
                     && (auth()->user()->admin->village_id == NULL || auth()->user()->admin->village_id != NULL),
@@ -80,8 +76,12 @@ class Table extends Component
                 }
             )
             ->orderBy($this->sortColumn, $this->sortDirection)
-            ->paginate($this->perPage)
-            ->onEachSide(1);
+            ->simplePaginate($this->perPage);
+    }
+
+    public function updatedPerPage(): void
+    {
+        $this->resetPage();
     }
 
     public function updatedSearch()
@@ -154,79 +154,9 @@ class Table extends Component
         }
     }
 
-    public function updatedPage(): void
-    {
-        $this->bulkSelectAll = $this->determineBulkSelectAll($this->getDataOnCurrentPage(), $this->bulkSelected);
-    }
-
-    public function updatedPerPage(): void
-    {
-        $this->resetPage();
-
-        $this->bulkSelectAll = $this->determineBulkSelectAll($this->getDataOnCurrentPage(), $this->bulkSelected);
-
-        if ($this->determineBulkSelectAll($this->getDataOnCurrentPage(), $this->bulkSelected)) {
-            $this->bulkSelected = array_keys(array_flip(array_merge($this->bulkSelected, $this->getDataOnCurrentPage())));
-        }
-    }
-
-    public function updatedBulkSelectAll(): void
-    {
-        $this->bulkSelected = $this->determineBulkSelectAll($this->getDataOnCurrentPage(), $this->bulkSelected)
-            ? array_keys(array_flip(array_diff($this->bulkSelected, $this->getDataOnCurrentPage())))
-            : array_keys(array_flip(array_merge($this->bulkSelected, $this->getDataOnCurrentPage())));
-    }
-
-    public function updatedBulkSelected(): void
-    {
-        $this->bulkSelectAll = $this->determineBulkSelectAll($this->getDataOnCurrentPage(), $this->bulkSelected);
-    }
-
-    public function paginationView(): string
-    {
-        return 'paginations.custom-pagination-links';
-    }
-
     #[On('refresh-data')]
     public function render()
     {
-        $this->bulkSelectedDisabled = count($this->bulkSelected) < 2;
-
-        if (method_exists($this->dasawismas(), 'currentPage')) {
-            ($this->dasawismas()->currentPage() <= $this->dasawismas()->lastPage())
-                ? $this->setPage($this->dasawismas()->currentPage())
-                : $this->setPage($this->dasawismas()->lastPage());
-        }
-
         return view('livewire.app.backend.data-input.dasawismas.table');
-    }
-
-    private function getDataOnCurrentPage(): array
-    {
-        return $this->dasawismas()->pluck('id')->toArray();
-    }
-
-    private function determineBulkSelectAll(array $dataOnCurrentPage, array $bulkSelected): bool
-    {
-        return empty(array_diff($dataOnCurrentPage, $bulkSelected));
-    }
-
-    #[On('clear-selected')]
-    public function clearSelected(): void
-    {
-        $this->bulkSelected = [];
-        $this->bulkSelectAll = false;
-    }
-
-    #[On('sort-by')]
-    public function sortBy(string $columnName): void
-    {
-        if ($this->sortColumn == $columnName) {
-            $this->sortDirection = $this->sortDirection == 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortDirection = 'asc';
-        }
-
-        $this->sortColumn = $columnName;
     }
 }

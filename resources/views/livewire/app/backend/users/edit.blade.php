@@ -179,8 +179,7 @@
             </template>
         </div>
     </div>
-    <div class="card-footer d-flex justify-content-between">
-        <button type="button" x-on:click='reset' class="btn btn-danger me-auto">Reset</button>
+    <div class="card-footer">
         <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
     </div>
 </form>
@@ -188,42 +187,9 @@
 @script
     <script>
         Alpine.data('form', () => {
-            const defaultData = {
-                photo: $wire.photo,
-                name: $wire.name,
-                username: $wire.username,
-                email: $wire.email,
-                phone_number: $wire.phone_number,
-                role_id: $wire.role_id,
-                province_id: $wire.province_id,
-                regency_id: $wire.regency_id,
-                district_id: $wire.district_id,
-                village_id: $wire.village_id,
-            };
-
             return {
                 imageUrl: $wire.photo,
-                reset() {
-                    this.imageUrl = defaultData.photo;
-                    document.getElementById('photo').value = null;
-                    @this.set('photo', defaultData.photo);
-                    @this.set('name', defaultData.name);
-                    @this.set('username', defaultData.username);
-                    @this.set('email', defaultData.email);
-                    @this.set('phone_number', defaultData.phone_number);
-                    @this.set('role_id', defaultData.role_id);
-                    @this.set('current_password', null);
-                    @this.set('new_password', null);
-                    @this.set('province_id', defaultData.province_id);
-                    @this.set('regency_id', defaultData.regency_id);
-                    @this.set('district_id', defaultData.district_id);
-                    @this.set('village_id', defaultData.village_id);
-                    @this.set('roles', []);
-                    @this.set('regencies', []);
-                    @this.set('districts', []);
-                    @this.set('villages', []);
-                    @this.resetValidationMessage();
-                },
+
                 fileChosen(event) {
                     let file = event.target.files[0];
 

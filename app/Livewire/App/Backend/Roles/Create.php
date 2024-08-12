@@ -34,13 +34,4 @@ class Create extends Component
 
         $this->redirectRoute('area.roles.index', navigate: true);
     }
-
-    public function clear(): void
-    {
-        $this->form->clearForm();
-
-        $this->clearValidation();
-
-        flasher_success('Form Berhasil direset.');
-    }
 }

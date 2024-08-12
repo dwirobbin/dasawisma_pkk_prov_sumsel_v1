@@ -8,11 +8,10 @@ use App\Models\FamilyMember;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use Livewire\Attributes\Computed;
-use Illuminate\Support\Collection;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection as EloquentCollection;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\Paginator;
 
 class Table extends Component
 {
@@ -27,10 +26,7 @@ class Table extends Component
 
     public string $sortColumn = 'fm.created_at';
 
-    public bool $bulkSelectedDisabled = false, $bulkSelectAll = false;
-    public $bulkSelected = [];
-
-    public EloquentCollection|array $provinces = [], $regencies = [], $districts = [], $villages = [];
+    public Collection|array $provinces = [], $regencies = [], $districts = [], $villages = [];
 
     public function placeholder(): View
     {
@@ -38,7 +34,7 @@ class Table extends Component
     }
 
     #[Computed()]
-    public function familyMembers(): LengthAwarePaginator|Collection
+    public function familyMembers(): Paginator
     {
         $familyMembers = FamilyMember::from('family_members AS fm')
             ->leftJoin('family_heads AS fh', 'fm.family_head_id', '=', 'fh.id')
@@ -56,7 +52,7 @@ class Table extends Component
                 fm.name, fm.nik_number, fm.birth_date, fm.status,
                 fm.marital_status, fm.gender, fm.last_education, fm.profession
             ")
-            ->when($this->search != '', fn (Builder $query) => $query->search(trim($this->search)))
+            ->when($this->search != '', fn(Builder $query) => $query->search(trim($this->search)))
             ->when(
                 auth()->user()->role_id == 2 && auth()->user()->admin->district_id != NULL
                     && (auth()->user()->admin->village_id == NULL || auth()->user()->admin->village_id != NULL),
@@ -74,9 +70,14 @@ class Table extends Component
             ->orderBy($this->sortColumn,  $this->sortDirection)
             ->orderBy('fm.family_head_id', 'DESC')
             ->orderBy('fm.status',  'ASC')
-            ->paginate($this->perPage);
+            ->simplePaginate($this->perPage);
 
-        return $familyMembers->setCollection($familyMembers->groupBy(fn ($column) => $column->kk_number));
+        return $familyMembers->setCollection($familyMembers->groupBy(fn($column) => $column->kk_number));
+    }
+
+    public function updatedPerPage()
+    {
+        $this->resetPage();
     }
 
     public function updatedSearch()
@@ -84,34 +85,9 @@ class Table extends Component
         $this->resetPage();
     }
 
-    public function paginationView(): string
-    {
-        return 'paginations.custom-pagination-links';
-    }
-
     #[On('refresh-data')]
     public function render()
     {
-        $this->bulkSelectedDisabled = count($this->bulkSelected) < 2;
-
-        if (method_exists($this->familyMembers(), 'currentPage')) {
-            ($this->familyMembers()->currentPage() <= $this->familyMembers()->lastPage())
-                ? $this->setPage($this->familyMembers()->currentPage())
-                : $this->setPage($this->familyMembers()->lastPage());
-        }
-
         return view('livewire.app.backend.data-input.members.family-members.table');
-    }
-
-    #[On('sort-by')]
-    public function sortBy(string $columnName): void
-    {
-        if ($this->sortColumn == $columnName) {
-            $this->sortDirection = $this->sortDirection == 'asc' ? 'desc' : 'asc';
-        } else {
-            $this->sortDirection = 'asc';
-        }
-
-        $this->sortColumn = $columnName;
     }
 }

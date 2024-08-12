@@ -139,7 +139,7 @@
                     </div>
 
                     <div class="col-12 d-flex justify-content-center">
-                        @livewire('app.backend.home', ['lazy' => true])
+                        {{-- @livewire('app.backend.home', ['lazy' => true]) --}}
                     </div>
                 </div>
             </div>

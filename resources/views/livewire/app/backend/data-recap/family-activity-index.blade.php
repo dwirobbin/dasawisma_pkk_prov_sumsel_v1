@@ -1,26 +1,19 @@
 <div>
     <div class="card-header py-2 d-flex flex-wrap justify-content-center justify-content-lg-between">
-        <div class="text-muted my-1 my-lg-0">
-            <label>
-                Lihat
-                <select class="d-inline-block form-select w-auto" wire:model.live='perPage'>
-                    @if (str_contains($currentUrl, '/area-code') && strlen(substr(strrchr($currentUrl, '/'), 1)) == 10)
-                        <option value="{{ count($data) }}">Semua</option>
-                    @else
-                        <option value="5">5</option>
-                        <option value="10">10</option>
-                        <option value="25">25</option>
-                        <option value="50">50</option>
-                        <option value="100">100</option>
-                        @if (count($data))
-                            <option value="{{ $data->total() }}">Semua</option>
-                        @endif
-                    @endif
-                </select>
-                data
-            </label>
-        </div>
-        {{-- <div class="text-muted ms-auto my-1 my-lg-0">
+        <h3 class="my-auto">
+            @if (str_contains($currentUrl, '/index'))
+                Kabupaten/Kota
+            @elseif (str_contains($currentUrl, '/area-code') && strlen(substr(strrchr($currentUrl, '/'), 1)) == 4)
+                Kecamatan
+            @elseif (str_contains($currentUrl, '/area-code') && strlen(substr(strrchr($currentUrl, '/'), 1)) == 7)
+                Kelurahan/Desa
+            @elseif (str_contains($currentUrl, '/area-code') && strlen(substr(strrchr($currentUrl, '/'), 1)) == 10)
+                Dasawisma
+            @else
+                Keluarga
+            @endif
+        </h3>
+        <div class="text-muted ms-auto my-1 my-lg-0">
             <div class="input-icon">
                 <input type="text" wire:model.live.debounce.300ms='search' class="form-control" placeholder="Cari...">
                 <span class="input-icon-addon">
@@ -32,7 +25,7 @@
                     </svg>
                 </span>
             </div>
-        </div> --}}
+        </div>
     </div>
 
     <div wire:loading.delay class="container">
@@ -70,7 +63,7 @@
                             {{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}
                         </th>
                         <td>
-                            @if (str_contains($currentUrl, '/index') || (strlen((int) $item['id']) == 4 || strlen((int) $item['id']) == 7 || strlen((int) $item['id']) == 10))
+                            @if (str_contains($currentUrl, '/index') || (str_contains($currentUrl, '/area-code') && strlen(substr(strrchr($currentUrl, '/'), 1)) != 10))
                                 <a href="{{ route('area.data-recap.family-activities.show-area', $item['id']) }}">
                                     {{ $item['name'] }}
                                 </a>
@@ -111,8 +104,8 @@
     <div wire:loading.class='invisible'>
         @if (method_exists($data, 'hasPages'))
             @if ($data->hasPages())
-                <div class="card-footer py-2">
-                    {{ $data->links() }}
+                <div class="card-footer py-2 d-flex justify-content-center align-items-center">
+                    {{ $data->links('paginations.custom-simple-pagination-links') }}
                 </div>
             @endif
         @endif

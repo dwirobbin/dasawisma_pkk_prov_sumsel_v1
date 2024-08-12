@@ -75,9 +75,9 @@ class Edit extends Component
             flasher_success('Data berhasil diperbaharui.');
         } catch (\Throwable) {
             flasher_fail('Terjadi suatu kesalahan.');
-        } finally {
-            $this->dispatch('close-modal-family-head-edit');
         }
+
+        $this->dispatch('close-modal-family-head-edit');
     }
 
     public function resetForm()

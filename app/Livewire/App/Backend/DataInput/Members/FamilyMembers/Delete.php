@@ -36,10 +36,18 @@ class Delete extends Component
         try {
             $familyMember = FamilyMember::query()
                 ->select([
-                    'family_members.id', 'family_members.gender', 'family_members.marital_status',
-                    'family_members.last_education', 'family_members.profession', 'family_members.family_head_id',
-                    'family_heads.dasawisma_id', 'dasawismas.slug AS dasawisma_slug', 'dasawismas.province_id',
-                    'dasawismas.regency_id', 'dasawismas.district_id', 'dasawismas.village_id',
+                    'family_members.id',
+                    'family_members.gender',
+                    'family_members.marital_status',
+                    'family_members.last_education',
+                    'family_members.profession',
+                    'family_members.family_head_id',
+                    'family_heads.dasawisma_id',
+                    'dasawismas.slug AS dasawisma_slug',
+                    'dasawismas.province_id',
+                    'dasawismas.regency_id',
+                    'dasawismas.district_id',
+                    'dasawismas.village_id',
                 ])
                 ->join('family_heads', 'family_members.family_head_id', '=', 'family_heads.id')
                 ->join('dasawismas', 'family_heads.dasawisma_id', '=', 'dasawismas.id')
@@ -53,10 +61,10 @@ class Delete extends Component
             $this->dispatch('refresh-data')->to(Table::class);
         } catch (\Throwable) {
             flasher_fail('Terjadi suatu kesalahan.');
-        } finally {
-            $this->resetForm();
-            $this->dispatch('close-fm-modal');
         }
+
+        $this->resetForm();
+        $this->dispatch('close-fm-modal');
     }
 
     public function resetForm()

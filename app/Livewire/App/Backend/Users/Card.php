@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Collection;
 use Livewire\Component;
 use Livewire\Attributes\On;
@@ -32,7 +33,7 @@ class Card extends Component
     }
 
     #[Computed()]
-    public function users(): LengthAwarePaginator|Collection
+    public function users(): Paginator
     {
         return User::query()
             ->select('id', 'name', 'username', 'email', 'role_id', 'photo', 'is_active')
@@ -82,8 +83,7 @@ class Card extends Component
                 }
             )
             ->orderBy($this->sortColumn, $this->sortDirection)
-            ->paginate($this->perPage)
-            ->onEachSide(1);
+            ->simplePaginate($this->perPage);
     }
 
     public function updatedPerPage(): void
@@ -100,15 +100,5 @@ class Card extends Component
     public function render(): View
     {
         return view('livewire.app.backend.users.card');
-    }
-
-    public function paginationView(): string
-    {
-        return 'paginations.custom-pagination-links';
-    }
-
-    public function setSort(string $sortDirection)
-    {
-        $this->sortDirection = ($sortDirection === 'desc') ? 'desc' : 'asc';
     }
 }
