@@ -49,7 +49,7 @@ class SumselNews extends Model
     protected function image(): Attribute
     {
         return Attribute::make(
-            get: fn (?string $value) => !is_null($value)
+            get: fn(?string $value) => !is_null($value)
                 ? asset('storage/image/sumsel-news/' . $value)
                 : asset('src/img/default-img.png')
         );

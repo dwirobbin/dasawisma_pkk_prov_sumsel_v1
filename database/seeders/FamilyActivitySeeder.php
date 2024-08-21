@@ -20,19 +20,32 @@ class FamilyActivitySeeder extends Seeder
         DB::disableQueryLog(); //disable log
 
         $up2kActivities = [
-            'Usaha Warung', 'Usaha Toko', 'Usaha Kuliner', 'Usaha Online (E-commerce)',
-            'Jasa kebersihan', 'Jual Tanaman Hias', 'Katering', 'Menjual Kerajinan Tangan',
-            'Menjual Kue,Roti dan Minuman', 'Jasa Konsultasi atau Penasihat', 'Jasa Instruktur Kebugaran',
-            'Jasa Desain Grafis atau Web', 'Jasa Sewa Penginapan', 'Jasa Pemeliharaan Kendaraan',
+            'Usaha Warung',
+            'Usaha Toko',
+            'Usaha Kuliner',
+            'Usaha Online (E-commerce)',
+            'Jasa kebersihan',
+            'Jual Tanaman Hias',
+            'Katering',
+            'Menjual Kerajinan Tangan',
+            'Menjual Kue,Roti dan Minuman',
+            'Jasa Konsultasi atau Penasihat',
+            'Jasa Instruktur Kebugaran',
+            'Jasa Desain Grafis atau Web',
+            'Jasa Sewa Penginapan',
+            'Jasa Pemeliharaan Kendaraan',
         ];
 
         $envHealthActivities = [
-            'Kerja bakti atau gotong royong', 'Membuat tempat sampah',
-            'Membuang sampah pada tempatnya', 'Menyelenggarakan kegiatan penanaman pohon dan tumbuhan',
-            'Membuat pupuk dari sampah organik', 'Tidak sembarang membakar sampah',
+            'Kerja bakti atau gotong royong',
+            'Membuat tempat sampah',
+            'Membuang sampah pada tempatnya',
+            'Menyelenggarakan kegiatan penanaman pohon dan tumbuhan',
+            'Membuat pupuk dari sampah organik',
+            'Tidak sembarang membakar sampah',
         ];
 
-        $totalRecords = 1000000; // Desired total number of records to insert
+        $totalRecords = 2000000; // Desired total number of records to insert
         $recordsPerIteration = 50000; // Number of records to insert per inner loop iteration
         $outerLoopIterations = ceil($totalRecords / $recordsPerIteration); // Calculate number of outer loop iterations
 

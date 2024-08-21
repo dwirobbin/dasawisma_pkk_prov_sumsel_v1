@@ -2,12 +2,8 @@
 
 namespace App\Livewire\App\Auth;
 
-use Throwable;
-use Carbon\Carbon;
 use App\Models\User;
 use Livewire\Component;
-use App\Events\LoginViaToken;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -89,14 +85,9 @@ class FormLogin extends Component
                 ->where($fieldType, '=', $validatedData['login_id'])
                 ->firstOrFail();
 
-            if (str_contains($this->returnUrl, '/auth/verify/email/' . $user->getKey())) {
-                if ($user->hasVerifiedEmail()) {
-                    return $this->redirect(route('verification.verified'));
-                }
-            }
-
-            if (!$user->hasVerifiedEmail()) {
-                return $this->redirect(route('verification.not-yet'));
+            if (!$user->is_active) {
+                session()->flash('message', ['text' => 'Akun anda nonaktif!!', 'type' => 'danger']);
+                return;
             }
 
             $url = $this->returnUrl ?? route('home');
@@ -110,48 +101,14 @@ class FormLogin extends Component
         $this->dispatch('remove-alert');
     }
 
-    public function loginWithoutPassowordHandler()
-    {
-        $validatedData = $this->validate([
-            'login_id'  => 'required|string|email|exists:users,email',
-        ], [
-            'required' => ':attribute wajib diisi.',
-            'string'   => ':attribute harus berupa string.',
-            'email'    => 'Format :attribute tidak valid.',
-            'exists'   => ':attribute belum terdaftar.',
-        ], [
-            'login_id' => 'Email',
-        ]);
-
-        $user = User::query()->where('email', $validatedData['login_id'])->firstOrFail();
-
-        if (!$user->hasVerifiedEmail()) {
-            $this->redirect(route('verification.not-yet'));
-
-            return;
-        }
-
-        $link = URL::temporarySignedRoute(
-            'auth.login.token',
-            Carbon::now()->addMinutes(config('auth.login_via_token.expire', 60)),
-            [
-                'username' => $user->username,
-            ]
-        );
-
-        event(new LoginViaToken($user, $link));
-
-        $this->redirect(route('auth.login.token.notice', ['email' => $user->email]), true);
-    }
-
     public function loginAsAnonymous(): void
     {
         try {
             $user = User::where('email', '=', 'guest@gmail.com')->firstOrFail();
-        } catch (ModelNotFoundException $modelNotFoundException) {
+        } catch (ModelNotFoundException) {
             flash_message('User tidak ditemukan', 'fail');
             return;
-        } catch (Throwable $th) {
+        } catch (\Throwable) {
             flash_message('Gagal login', 'fail');
             return;
         } finally {

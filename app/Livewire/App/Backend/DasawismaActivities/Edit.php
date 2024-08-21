@@ -28,7 +28,7 @@ class Edit extends Component
     {
         $response = $this->form->store();
 
-        flasher_message($response['message'], $response['type']);
+        toastr_message($response['message'], $response['type']);
 
         $this->redirectRoute('area.dasawisma_activity.index', navigate: true);
     }
@@ -39,6 +39,6 @@ class Edit extends Component
 
         $this->clearValidation();
 
-        flasher_success('Form Berhasil direset.');
+        toastr_success('Form Berhasil direset.');
     }
 }

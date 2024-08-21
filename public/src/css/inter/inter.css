@@ -16,58 +16,6 @@ Use like this in your CSS:
 
 @font-face {
     font-family: "Inter";
-    font-style: normal;
-    font-weight: 100;
-    font-display: swap;
-    src: url("font-files/Inter-Thin.woff2?v=3.19") format("woff2");
-}
-@font-face {
-    font-family: "Inter";
-    font-style: italic;
-    font-weight: 100;
-    font-display: swap;
-    src: url("font-files/Inter-ThinItalic.woff2?v=3.19") format("woff2");
-}
-
-@font-face {
-    font-family: "Inter";
-    font-style: normal;
-    font-weight: 200;
-    font-display: swap;
-    src: url("font-files/Inter-ExtraLight.woff2?v=3.19") format("woff2");
-}
-@font-face {
-    font-family: "Inter";
-    font-style: italic;
-    font-weight: 200;
-    font-display: swap;
-    src: url("font-files/Inter-ExtraLightItalic.woff2?v=3.19") format("woff2");
-}
-
-@font-face {
-    font-family: "Inter";
-    font-style: normal;
-    font-weight: 300;
-    font-display: swap;
-    src: url("font-files/Inter-Light.woff2?v=3.19") format("woff2");
-}
-@font-face {
-    font-family: "Inter";
-    font-style: italic;
-    font-weight: 300;
-    font-display: swap;
-    src: url("font-files/Inter-LightItalic.woff2?v=3.19") format("woff2");
-}
-
-@font-face {
-    font-family: "Inter";
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url("font-files/Inter-Regular.woff2?v=3.19") format("woff2");
-}
-@font-face {
-    font-family: "Inter";
     font-style: italic;
     font-weight: 400;
     font-display: swap;
@@ -205,8 +153,8 @@ Use like this in your CSS:
 }
 
 :root {
-    --tblr-font-sans-serif: "Inter Var", -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI,
-        Roboto, Helvetica Neue, sans-serif;
+    --tblr-font-sans-serif: "Inter Var", -apple-system, BlinkMacSystemFont,
+        San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
 }
 
 body {

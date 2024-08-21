@@ -13,10 +13,6 @@
                             </div>
 
                             <livewire:app.auth.form-login />
-
-                            {{-- <div class="text-center text-muted mt-3">
-                                Belum punya akun? <a wire:navigate href="{{ route('auth.register') }}" tabindex="4">Daftar</a>
-                            </div> --}}
                         </div>
                     </div>
                     <div class="col-lg d-none d-lg-block">

@@ -80,13 +80,13 @@
                                 <a>{{ $item['name'] }}</a>
                             @endif
                         </td>
-                        <td>{{ number_format($item['toddlers_sum'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['pus_sum'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['wus_sum'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['blind_peoples_sum'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['pregnant_womens_sum'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['breastfeeding_mothers_sum'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['elderlies_sum'], 0, '', '.') }}</td>
+                        <td>{{ format_number($item['toddlers_sum']) }}</td>
+                        <td>{{ format_number($item['pus_sum']) }}</td>
+                        <td>{{ format_number($item['wus_sum']) }}</td>
+                        <td>{{ format_number($item['blind_peoples_sum']) }}</td>
+                        <td>{{ format_number($item['pregnant_womens_sum']) }}</td>
+                        <td>{{ format_number($item['breastfeeding_mothers_sum']) }}</td>
+                        <td>{{ format_number($item['elderlies_sum']) }}</td>
                     </tr>
                 @empty
                     <tr>
@@ -103,7 +103,7 @@
         @if (method_exists($data, 'hasPages'))
             @if ($data->hasPages())
                 <div class="card-footer py-2 d-flex justify-content-center align-items-center">
-                    {{ $data->links('paginations.custom-simple-pagination-links') }}
+                    {{ $data->links('vendor.livewire.simple-bootstrap') }}
                 </div>
             @endif
         @endif

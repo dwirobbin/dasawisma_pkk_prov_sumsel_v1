@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Contracts\Auth\CanResetPassword;
-use Illuminate\Auth\Passwords\CanResetPassword as PasswordsCanResetPassword;
 use App\Traits\HasPermission;
 use App\Models\DasawismaActivity;
 use Laravel\Sanctum\HasApiTokens;
@@ -58,7 +57,7 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     protected function photo(): Attribute
     {
         return Attribute::make(
-            get: fn (?string $value) => !is_null($value)
+            get: fn(?string $value) => !is_null($value)
                 ? asset('storage/image/profiles/' . $value)
                 : asset('src/img/auth/profile_default.png')
         );
@@ -132,26 +131,5 @@ class User extends Authenticatable implements MustVerifyEmail, CanResetPassword
     public function scopeLastWeek(Builder $query): Builder
     {
         return $query->whereBetween('created_at', [carbon('1 week ago'), now()])->latest();
-    }
-
-    /**
-     * Send the email verification notification.
-     *
-     * @return void
-     */
-    public function sendEmailVerificationNotification()
-    {
-        $this->notify(new \App\Notifications\VerifyEmail);
-    }
-
-    /**
-     * Send the password reset notification.
-     *
-     * @param  string  $token
-     * @return void
-     */
-    public function sendPasswordResetNotification($token): void
-    {
-        $this->notify(new \App\Notifications\ResetPassword($token));
     }
 }

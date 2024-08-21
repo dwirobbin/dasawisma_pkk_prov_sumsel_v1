@@ -90,84 +90,84 @@
                         </td>
                         <td>
                             @if (str_contains($currentUrl, '/index') || str_contains($currentUrl, '/area-code'))
-                                {{ number_format($item['rice_foods_count'], 0, '', '.') }}
+                                {{ format_number($item['rice_foods_count']) }}
                             @else
                                 {{ $item['rice_foods_count'] == 1 ? 'Ya' : 'Tidak' }}
                             @endif
                         </td>
                         <td>
                             @if (str_contains($currentUrl, '/index') || str_contains($currentUrl, '/area-code'))
-                                {{ number_format($item['etc_rice_foods_count'], 0, '', '.') }}
+                                {{ format_number($item['etc_rice_foods_count']) }}
                             @else
                                 {{ $item['etc_rice_foods_count'] == 1 ? 'Ya' : 'Tidak' }}
                             @endif
                         </td>
                         <td>
                             @if (str_contains($currentUrl, '/index') || str_contains($currentUrl, '/area-code'))
-                                {{ number_format($item['pdam_waters_count'], 0, '', '.') }}
+                                {{ format_number($item['pdam_waters_count']) }}
                             @else
                                 {{ $item['pdam_waters_count'] == 1 ? 'Ya' : 'Tidak' }}
                             @endif
                         </td>
                         <td>
                             @if (str_contains($currentUrl, '/index') || str_contains($currentUrl, '/area-code'))
-                                {{ number_format($item['well_waters_count'], 0, '', '.') }}
+                                {{ format_number($item['well_waters_count']) }}
                             @else
                                 {{ $item['well_waters_count'] == 1 ? 'Ya' : 'Tidak' }}
                             @endif
                         </td>
                         <td>
                             @if (str_contains($currentUrl, '/index') || str_contains($currentUrl, '/area-code'))
-                                {{ number_format($item['river_waters_count'], 0, '', '.') }}
+                                {{ format_number($item['river_waters_count']) }}
                             @else
                                 {{ $item['river_waters_count'] == 1 ? 'Ya' : 'Tidak' }}
                             @endif
                         </td>
                         <td>
                             @if (str_contains($currentUrl, '/index') || str_contains($currentUrl, '/area-code'))
-                                {{ number_format($item['etc_waters_count'], 0, '', '.') }}
+                                {{ format_number($item['etc_waters_count']) }}
                             @else
                                 {{ $item['etc_waters_count'] == 1 ? 'Ya' : 'Tidak' }}
                             @endif
                         </td>
                         <td>
                             @if (str_contains($currentUrl, '/index') || str_contains($currentUrl, '/area-code'))
-                                {{ number_format($item['have_toilets_count'], 0, '', '.') }}
+                                {{ format_number($item['have_toilets_count']) }}
                             @else
                                 {{ $item['have_toilets_count'] == 1 ? 'Ya' : 'Tidak' }}
                             @endif
                         </td>
                         <td>
                             @if (str_contains($currentUrl, '/index') || str_contains($currentUrl, '/area-code'))
-                                {{ number_format($item['have_landfills_count'], 0, '', '.') }}
+                                {{ format_number($item['have_landfills_count']) }}
                             @else
                                 {{ $item['have_landfills_count'] == 1 ? 'Ya' : 'Tidak' }}
                             @endif
                         </td>
                         <td>
                             @if (str_contains($currentUrl, '/index') || str_contains($currentUrl, '/area-code'))
-                                {{ number_format($item['have_sewerages_count'], 0, '', '.') }}
+                                {{ format_number($item['have_sewerages_count']) }}
                             @else
                                 {{ $item['have_sewerages_count'] == 1 ? 'Ya' : 'Tidak' }}
                             @endif
                         </td>
                         <td>
                             @if (str_contains($currentUrl, '/index') || str_contains($currentUrl, '/area-code'))
-                                {{ number_format($item['pasting_p4k_stickers_count'], 0, '', '.') }}
+                                {{ format_number($item['pasting_p4k_stickers_count']) }}
                             @else
                                 {{ $item['pasting_p4k_stickers_count'] == 1 ? 'Ya' : 'Tidak' }}
                             @endif
                         </td>
                         <td>
                             @if (str_contains($currentUrl, '/index') || str_contains($currentUrl, '/area-code'))
-                                {{ number_format($item['healthy_criterias_count'], 0, '', '.') }}
+                                {{ format_number($item['healthy_criterias_count']) }}
                             @else
                                 {{ $item['healthy_criterias_count'] == 1 ? 'Ya' : 'Tidak' }}
                             @endif
                         </td>
                         <td>
                             @if (str_contains($currentUrl, '/index') || str_contains($currentUrl, '/area-code'))
-                                {{ number_format($item['no_healthy_criterias_count'], 0, '', '.') }}
+                                {{ format_number($item['no_healthy_criterias_count']) }}
                             @else
                                 {{ $item['no_healthy_criterias_count'] == 1 ? 'Ya' : 'Tidak' }}
                             @endif
@@ -188,7 +188,7 @@
         @if (method_exists($data, 'hasPages'))
             @if ($data->hasPages())
                 <div class="card-footer py-2 d-flex justify-content-center align-items-center">
-                    {{ $data->links('paginations.custom-simple-pagination-links') }}
+                    {{ $data->links('vendor.livewire.simple-bootstrap') }}
                 </div>
             @endif
         @endif

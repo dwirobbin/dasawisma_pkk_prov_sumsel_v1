@@ -1,11 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ProfileController;
-use App\Http\Controllers\Auth\MailVerificationController;
-use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\Frontend\DasawismaActivityController;
 use App\Http\Controllers\Backend\RoleController as BackendRoleController;
 use App\Http\Controllers\Backend\UserController as BackendUserController;
@@ -48,36 +44,10 @@ Route::view('/about-us', 'pages.frontend.about-us-index')->name('about_us');
 Route::prefix('/auth')->name('auth.')->group(function () {
     Route::middleware(['guest'])->group(function () {
         Route::view('/login', 'pages.auth.login-index')->name('login');
-        Route::view('/login/notice', 'pages.auth.emails.verification-login-via-token')->name('login.token.notice');
-        Route::get('/login/{username}', [AuthController::class, 'loginViaToken'])->name('login.token');
-        Route::view('/register', 'pages.auth.register-index')->name('register');
     });
-
 
     Route::middleware(['auth'])->group(function () {
         Route::get('/profile', ProfileController::class)->name('profile');
-    });
-});
-
-Route::middleware(['auth'])->group(function () {
-    Route::prefix('/auth/verify-email')->as('verification.')->controller(MailVerificationController::class)->group(function () {
-        Route::get('/', 'show')->name('notice');
-        Route::get('/not-yet', 'notYet')->name('not-yet');
-        Route::get('/invalid', 'invalid')->name('invalid');
-        Route::get('/verified', 'verified')->name('verified');
-        Route::get('/{id}/{hash}', 'verify')->middleware(['signed'])->name('verify');
-    });
-});
-
-Route::middleware(['guest'])->group(function () {
-    Route::prefix('/auth/forgot-password')->as('password.')->controller(ForgotPasswordController::class)->group(function () {
-        Route::get('/', 'create')->name('request');
-        Route::get('/notice', 'notice')->name('notice');
-    });
-
-    Route::prefix('/auth/reset-password')->as('password.')->controller(ResetPasswordController::class)->group(function () {
-        Route::get('/invalid', 'invalid')->name('invalid');
-        Route::get('/{token}', 'create')->name('reset');
     });
 });
 

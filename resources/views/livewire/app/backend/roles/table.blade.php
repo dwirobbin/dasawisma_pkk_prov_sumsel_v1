@@ -105,7 +105,7 @@
         @if (method_exists($this->roles, 'hasPages'))
             @if ($this->roles->hasPages())
                 <div class="card-footer py-2 d-flex justify-content-center align-items-center">
-                    {{ $this->roles->links('paginations.custom-simple-pagination-links') }}
+                    {{ $this->roles->links('vendor.livewire.simple-bootstrap') }}
                 </div>
             @endif
         @endif

@@ -13,8 +13,6 @@ class FamilySizeMemberIndex extends Component
 {
     use WithPagination;
 
-    protected $paginationTheme = 'bootstrap';
-
     public $param = '';
 
     public int $perPage = 5;

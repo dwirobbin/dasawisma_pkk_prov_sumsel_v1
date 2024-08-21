@@ -13,8 +13,6 @@ class FamilyBuildingIndex extends Component
 {
     use WithPagination;
 
-    protected $paginationTheme = 'bootstrap';
-
     public $param = '';
 
     public int $perPage = 5;

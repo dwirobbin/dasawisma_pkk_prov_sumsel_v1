@@ -11,8 +11,6 @@ class UserCommentSumselNews extends Model
 {
     use HasFactory;
 
-    use HasFactory;
-
     protected $table = 'user_comments_sumsel_news';
     protected $primaryKey = 'id';
     protected $keyType = 'int';

@@ -24,7 +24,7 @@ class FamilyHeadSeeder extends Seeder
         $dasawismaID = Dasawisma::query()->pluck('id');
         $createdByUserID = User::query()->where('role_id', 2)->pluck('id');
 
-        $totalRecords = 1000000; // Desired total number of records to insert
+        $totalRecords = 2000000; // Desired total number of records to insert
         $recordsPerIteration = 50000; // Number of records to insert per inner loop iteration
         $outerLoopIterations = ceil($totalRecords / $recordsPerIteration); // Calculate number of outer loop iterations
 

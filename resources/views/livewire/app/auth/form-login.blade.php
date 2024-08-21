@@ -37,12 +37,9 @@
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
                 </div>
-                <div class="mb-2">
+                <div class="mb-3">
                     <label class="form-label required">
                         Kata Sandi
-                        {{-- <span class="form-label-description">
-                            <a wire:navigate href="{{ route('password.request') }}">Lupa Kata Sandi</a>
-                        </span> --}}
                     </label>
                     <div class="input-group input-group-flat" x-data="{ isVisible: false }">
                         <input @visibility.window="$el.type = ($el.type == 'password') ? 'text' : 'password'" type="password"
@@ -80,7 +77,7 @@
                         <small class="text-danger">{{ $message }}</small>
                     @enderror
                 </div>
-                <div class="form-footer d-flex flex-wrap flex-sm-nowrap gap-2">
+                <div class="form-footer mt-4">
                     <button type="button" wire:click='loginHandler' class="btn btn-primary w-100" tabindex="3" wire:loading.attr='disabled'>
                         <span wire:loading.remove wire:target='loginHandler'>
                             Masuk
@@ -89,21 +86,10 @@
                         <span wire:loading wire:target="loginHandler" role="status" class="spinner-border spinner-border-sm"></span>&ensp;
                         <span wire:loading wire:target="loginHandler" role="status">Loading..</span>
                     </button>
-
-                    <button type="button" wire:click='loginWithoutPassowordHandler' class="btn btn-outline-primary w-100" tabindex="4"
-                        wire:loading.attr='disabled'>
-                        <span wire:loading.remove wire:target='loginWithoutPassowordHandler'>
-                            Masuk tanpa Password
-                        </span>
-
-                        <span wire:loading wire:target="loginWithoutPassowordHandler" role="status"
-                            class="spinner-border spinner-border-sm"></span>&ensp;
-                        <span wire:loading wire:target="loginWithoutPassowordHandler" role="status">Loading..</span>
-                    </button>
                 </div>
             </form>
         </div>
-        <div class="hr-text">or</div>
+        <div class="hr-text">Atau</div>
         <div class="card-body">
             <div class="row">
                 <div class="col">

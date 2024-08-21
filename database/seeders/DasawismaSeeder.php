@@ -13,18 +13,6 @@ class DasawismaSeeder extends Seeder
      */
     public function run(): void
     {
-        for ($i = 0; $i < 3; $i++) {
-            Dasawisma::create([
-                'name'          => 'Mawar',
-                'province_id'   => 16, // Provinsi
-                'regency_id'    => 1601, // OKU
-                'district_id'   => 1601092, // Sinar Peninjauan
-                'village_id'    => 1601092005, // Marga Mulya
-                'rt'            => fake()->randomDigitNotNull(),
-                'rw'            => fake()->randomDigitNotNull(),
-            ]);
-        }
-
-        Dasawisma::factory(100)->create();
+        Dasawisma::factory(500)->create();
     }
 }

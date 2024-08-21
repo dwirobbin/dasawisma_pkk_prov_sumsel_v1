@@ -17,8 +17,6 @@ class Table extends Component
 {
     use WithPagination;
 
-    protected $paginationTheme = 'bootstrap';
-
     public int $perPage = 5;
 
     #[Url()]

@@ -77,14 +77,14 @@
                         </td>
                         <td>
                             @if (str_contains($currentUrl, '/index') || str_contains($currentUrl, '/area-code'))
-                                {{ number_format($item['up2k_activities_sum'], 0, '', '.') }}
+                                {{ format_number($item['up2k_activities_sum']) }}
                             @else
                                 {{ $item['up2k_activity'] }}
                             @endif
                         </td>
                         <td>
                             @if (str_contains($currentUrl, '/index') || str_contains($currentUrl, '/area-code'))
-                                {{ number_format($item['env_health_activities_sum'], 0, '', '.') }}
+                                {{ format_number($item['env_health_activities_sum']) }}
                             @else
                                 {{ $item['env_health_activity'] }}
                             @endif
@@ -105,7 +105,7 @@
         @if (method_exists($data, 'hasPages'))
             @if ($data->hasPages())
                 <div class="card-footer py-2 d-flex justify-content-center align-items-center">
-                    {{ $data->links('paginations.custom-simple-pagination-links') }}
+                    {{ $data->links('vendor.livewire.simple-bootstrap') }}
                 </div>
             @endif
         @endif

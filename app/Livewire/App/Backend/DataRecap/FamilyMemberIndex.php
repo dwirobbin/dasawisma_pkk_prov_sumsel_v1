@@ -6,14 +6,13 @@ use Livewire\Component;
 use App\Models\FamilyMember;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
 use RalphJSmit\Livewire\Urls\Facades\Url as LivewireUrl;
 
 class FamilyMemberIndex extends Component
 {
     use WithPagination;
-
-    protected $paginationTheme = 'bootstrap';
 
     public $param = '';
 
@@ -45,6 +44,8 @@ class FamilyMemberIndex extends Component
         };
 
         $user = auth()->user();
+
+        DB::enableQueryLog();
 
         $familyMembers = FamilyMember::query()
             ->selectRaw("
@@ -129,6 +130,8 @@ class FamilyMemberIndex extends Component
                 $query->where('dasawismas.province_id', '=', $user->admin->province_id);
             })
             ->simplePaginate($this->perPage);
+
+        // dump(DB::getQueryLog());
 
         return view('livewire.app.backend.data-recap.family-member-index', [
             'data' => $familyMembers,

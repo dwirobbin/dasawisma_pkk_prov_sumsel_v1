@@ -173,7 +173,7 @@
         @if (method_exists($this->dasawismas, 'hasPages'))
             @if ($this->dasawismas->hasPages())
                 <div class="card-footer py-2 d-flex justify-content-center align-items-center">
-                    {{ $this->dasawismas->links('paginations.custom-simple-pagination-links') }}
+                    {{ $this->dasawismas->links('vendor.livewire.simple-bootstrap') }}
                 </div>
             @endif
         @endif

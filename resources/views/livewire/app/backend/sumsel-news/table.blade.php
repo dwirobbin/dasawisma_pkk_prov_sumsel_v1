@@ -128,7 +128,7 @@
         @if (method_exists($this->sumselNews, 'hasPages'))
             @if ($this->sumselNews->hasPages())
                 <div class="card-footer py-2 d-flex justify-content-center align-items-center">
-                    {{ $this->sumselNews->links('paginations.custom-simple-pagination-links') }}
+                    {{ $this->sumselNews->links('vendor.livewire.simple-bootstrap') }}
                 </div>
             @endif
         @endif

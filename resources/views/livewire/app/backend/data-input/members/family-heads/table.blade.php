@@ -99,7 +99,7 @@
         @if (method_exists($this->familyHeads, 'hasPages'))
             @if ($this->familyHeads->hasPages())
                 <div class="card-footer py-2 d-flex justify-content-center align-items-center">
-                    {{ $this->familyHeads->links('paginations.custom-simple-pagination-links') }}
+                    {{ $this->familyHeads->links('vendor.livewire.simple-bootstrap') }}
                 </div>
             @endif
         @endif

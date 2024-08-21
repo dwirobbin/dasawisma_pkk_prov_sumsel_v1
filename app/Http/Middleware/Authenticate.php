@@ -20,9 +20,7 @@ class Authenticate extends Middleware
                     'type' => 'danger'
                 ]);
 
-                return $request->routeIs('verification.*')
-                    ? route('auth.login')
-                    : route('auth.login', ['return-url' => URL::current()]);
+                return route('auth.login', ['return-url' => URL::current()]);
             }
         }
 

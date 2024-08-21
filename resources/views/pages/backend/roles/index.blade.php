@@ -45,7 +45,5 @@
         </div>
 
         <livewire:app.backend.roles.delete />
-
-        <livewire:app.backend.roles.bulk-delete />
     </div>
 </x-app-layout>

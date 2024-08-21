@@ -91,23 +91,23 @@
                                 <a>{{ $item['name'] }}</a>
                             @endif
                         </td>
-                        <td>{{ number_format($item['family_members_count'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['gender_males_count'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['gender_females_count'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['marries_count'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['singles_count'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['widows_count'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['widowers_count'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['workings_count'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['not_workings_count'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['kindergartens_count'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['elementary_schools_count'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['middle_schools_count'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['high_schools_count'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['associate_degrees_count'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['bachelor_degrees_count'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['master_degrees_count'], 0, '', '.') }}</td>
-                        <td>{{ number_format($item['post_degrees_count'], 0, '', '.') }}</td>
+                        <td>{{ format_number($item['family_members_count']) }}</td>
+                        <td>{{ format_number($item['gender_males_count']) }}</td>
+                        <td>{{ format_number($item['gender_females_count']) }}</td>
+                        <td>{{ format_number($item['marries_count']) }}</td>
+                        <td>{{ format_number($item['singles_count']) }}</td>
+                        <td>{{ format_number($item['widows_count']) }}</td>
+                        <td>{{ format_number($item['widowers_count']) }}</td>
+                        <td>{{ format_number($item['workings_count']) }}</td>
+                        <td>{{ format_number($item['not_workings_count']) }}</td>
+                        <td>{{ format_number($item['kindergartens_count']) }}</td>
+                        <td>{{ format_number($item['elementary_schools_count']) }}</td>
+                        <td>{{ format_number($item['middle_schools_count']) }}</td>
+                        <td>{{ format_number($item['high_schools_count']) }}</td>
+                        <td>{{ format_number($item['associate_degrees_count']) }}</td>
+                        <td>{{ format_number($item['bachelor_degrees_count']) }}</td>
+                        <td>{{ format_number($item['master_degrees_count']) }}</td>
+                        <td>{{ format_number($item['post_degrees_count']) }}</td>
                     </tr>
                 @empty
                     <tr>
@@ -124,7 +124,7 @@
         @if (method_exists($data, 'hasPages'))
             @if ($data->hasPages())
                 <div class="card-footer py-2 d-flex justify-content-center align-items-center">
-                    {{ $data->links('paginations.custom-simple-pagination-links') }}
+                    {{ $data->links('vendor.livewire.simple-bootstrap') }}
                 </div>
             @endif
         @endif

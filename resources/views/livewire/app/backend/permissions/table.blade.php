@@ -103,7 +103,7 @@
         @if (method_exists($this->permissions, 'hasPages'))
             @if ($this->permissions->hasPages())
                 <div class="card-footer py-2 d-flex justify-content-center align-items-center">
-                    {{ $this->permissions->links('paginations.custom-simple-pagination-links') }}
+                    {{ $this->permissions->links('vendor.livewire.simple-bootstrap') }}
                 </div>
             @endif
         @endif

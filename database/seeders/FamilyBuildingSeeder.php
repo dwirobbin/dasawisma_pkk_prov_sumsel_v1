@@ -22,12 +22,18 @@ class FamilyBuildingSeeder extends Seeder
 
         $stapleFoodLists = ['Beras', 'Non Beras'];
         $waterSourceLists = [
-            'PDAM', 'Sumur', 'Sungai', 'Lainnya',  'PDAM,Sumur',
-            'PDAM,Sungai', 'PDAM,Sumur,Sungai', 'Sumur,Sungai',
+            'PDAM',
+            'Sumur',
+            'Sungai',
+            'Lainnya',
+            'PDAM,Sumur',
+            'PDAM,Sungai',
+            'PDAM,Sumur,Sungai',
+            'Sumur,Sungai',
         ];
         $houseCriteriaLists = ['Sehat', 'Kurang Sehat'];
 
-        $totalRecords = 1000000; // Desired total number of records to insert
+        $totalRecords = 2000000; // Desired total number of records to insert
         $recordsPerIteration = 50000; // Number of records to insert per inner loop iteration
         $outerLoopIterations = ceil($totalRecords / $recordsPerIteration); // Calculate number of outer loop iterations
 
