@@ -1,4 +1,4 @@
-<div wire:init='getFamilySizeMembers'>
+<div wire:init='getData'>
     @if ($readyToLoad)
         <div class="card-header py-2 d-flex flex-wrap justify-content-center justify-content-lg-between">
             <h3 class="my-auto">
@@ -63,10 +63,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @forelse ($data as $item)
+                    @forelse ($familySizeMembers['data'] as $item)
                         <tr wire:key='{{ $item['id'] }}' class="text-nowrap">
                             <th class="text-muted">
-                                {{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}
+                                {{ ($familySizeMembers['current_page'] - 1) * $familySizeMembers['per_page'] + $loop->iteration }}
                             </th>
                             <td>
                                 @if (str_contains($currentUrl, '/index') || (str_contains($currentUrl, '/area-code') && strlen(substr(strrchr($currentUrl, '/'), 1)) != 10))
@@ -92,7 +92,7 @@
                     @empty
                         <tr>
                             <td colspan="14" class="text-center text-info">
-                                {{ empty($data) ? 'Tidak ada data yang tersedia pada tabel ini!' : 'Tidak ditemukan data yang sesuai!' }}
+                                {{ 'Data tidak tersedia!' }}
                             </td>
                         </tr>
                     @endforelse
@@ -101,13 +101,34 @@
         </div>
 
         <div wire:loading.class='invisible'>
-            @if (method_exists($data, 'hasPages'))
-                @if ($data->hasPages())
-                    <div class="card-footer py-2 d-flex justify-content-center align-items-center">
-                        {{ $data->links('vendor.livewire.simple-bootstrap') }}
-                    </div>
-                @endif
-            @endif
+            <div class="card-footer py-2 d-flex justify-content-center align-items-center">
+                <nav>
+                    <ul class="pagination mb-0 space-x-2">
+                        {{-- Previous Page Link --}}
+                        @if ($familySizeMembers['prev_page_url'] == null)
+                            <li class="page-item disabled" aria-disabled="true">
+                                <span class="btn btn-secondary disabled">&lsaquo;</span>
+                            </li>
+                        @else
+                            <li class="page-item">
+                                <button type="button"class="btn btn-primary" wire:click="goToPrevPage"
+                                    wire:loading.attr="disabled">&lsaquo;</button>
+                            </li>
+                        @endif
+
+                        {{-- Next Page Link --}}
+                        @if ($familySizeMembers['next_page_url'] != null)
+                            <li class="page-item">
+                                <a class="btn btn-primary" wire:click="goToNextPage" wire:loading.attr="disabled">&rsaquo;</a>
+                            </li>
+                        @else
+                            <li class="page-item disabled" aria-disabled="true">
+                                <span class="btn btn-secondary disabled">&rsaquo;</span>
+                            </li>
+                        @endif
+                    </ul>
+                </nav>
+            </div>
         </div>
     @else
         <div class="container container-slim py-3" style="max-width: 16rem">

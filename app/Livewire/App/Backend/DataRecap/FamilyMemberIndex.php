@@ -6,9 +6,7 @@ use Livewire\Component;
 use App\Models\FamilyMember;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Pagination\Paginator;
 use RalphJSmit\Livewire\Urls\Facades\Url as LivewireUrl;
 
 class FamilyMemberIndex extends Component
@@ -24,7 +22,7 @@ class FamilyMemberIndex extends Component
 
     public ?string $currentUrl = NULL;
 
-    public array $familyMembers = [];
+    public $familyMembers = null;
     public bool $readyToLoad = false;
 
     public function mount()
@@ -32,12 +30,13 @@ class FamilyMemberIndex extends Component
         $this->currentUrl = LivewireUrl::current();
     }
 
-    public function placeholder()
+    public function updatedSearch()
     {
-        return view('placeholder');
+        $this->resetPage();
+        $this->getData();
     }
 
-    public function getFamilyMembers()
+    public function getData($currentPage = null)
     {
         $param = match (true) {
             str_contains($this->currentUrl, '/index') => 'index',
@@ -48,8 +47,6 @@ class FamilyMemberIndex extends Component
         };
 
         $user = auth()->user();
-
-        // DB::enableQueryLog();
 
         $this->familyMembers = FamilyMember::query()
             ->selectRaw("
@@ -96,7 +93,11 @@ class FamilyMemberIndex extends Component
             ->when(strlen($param) == 7, function (Builder $query) {
                 $query->addSelect('villages.id', 'villages.name')
                     ->join('villages', 'dasawismas.village_id', '=', 'villages.id')
-                    ->where('dasawismas.district_id', '=', $this->param)
+                    ->where(
+                        'dasawismas.district_id',
+                        '=',
+                        $this->param
+                    )
                     ->when($this->search != '', function (Builder $query) {
                         $query->where('villages.name', 'LIKE', '%' . trim($this->search) . '%');
                     })
@@ -106,9 +107,12 @@ class FamilyMemberIndex extends Component
             ->when(strlen($param) == 10, function (Builder $query) {
                 $query->addSelect('dasawismas.id', 'dasawismas.name', 'dasawismas.slug')
                     ->where('dasawismas.village_id', '=', $this->param)
-                    ->when($this->search != '', function (Builder $query) {
-                        $query->where('dasawismas.name', 'LIKE', '%' . trim($this->search) . '%');
-                    })
+                    ->when(
+                        $this->search != '',
+                        function (Builder $query) {
+                            $query->where('dasawismas.name', 'LIKE', '%' . trim($this->search) . '%');
+                        }
+                    )
                     ->groupBy('dasawismas.id')
                     ->orderBy('dasawismas.village_id', 'ASC');
             })
@@ -133,7 +137,7 @@ class FamilyMemberIndex extends Component
             ->when($user->role_id == 2 && $user->admin->province_id != NULL, function (Builder $query) use ($user) {
                 $query->where('dasawismas.province_id', '=', $user->admin->province_id);
             })
-            ->simplePaginate($this->perPage)
+            ->simplePaginate($this->perPage, ['*'], 'page', $currentPage ?? $this->getPage())
             ->toArray();
 
         $this->readyToLoad = true;
@@ -141,25 +145,16 @@ class FamilyMemberIndex extends Component
 
     public function render()
     {
-        $data = null;
+        return view('livewire.app.backend.data-recap.family-member-index');
+    }
 
-        if ($this->readyToLoad) {
-            $this->getFamilyMembers();
+    public function goToPrevPage()
+    {
+        $this->getData($this->previousPage());
+    }
 
-            $data = $this->familyMembers['data'];
-            $perPage = $this->perPage;
-            $currentPage = $this->familyMembers['current_page'] ?? 1;
-            $paginator = new Paginator($data, $perPage, $currentPage, [
-                'path' => Paginator::resolveCurrentPath(),
-            ]);
-
-            $paginator->hasMorePagesWhen($this->familyMembers['next_page_url'] ? true : false);
-
-            $data = $paginator;
-        }
-
-        return view('livewire.app.backend.data-recap.family-member-index', [
-            'data' => $data,
-        ]);
+    public function goToNextPage()
+    {
+        $this->getData($this->nextPage());
     }
 }
