@@ -22,7 +22,7 @@ class FamilyMemberSeeder extends Seeder
 
         $lastEducations = ['SD/MI', 'SLTP/SMP/MTS', 'SLTA/SMA/MA/SMK', 'Diploma', 'S1', 'S2', 'S3'];
 
-        $totalRecords = 2000000; // Desired total number of records to insert
+        $totalRecords = 7400000; // Desired total number of records to insert
         $divideTotalRecords = $totalRecords / 2; // the number of rows of data divided by two
         $recordsPerIteration = 50000; // Number of records to insert per inner loop iteration
         $outerLoopIterations = ceil($totalRecords / $recordsPerIteration); // Calculate number of outer loop iterations

@@ -19,7 +19,7 @@ class FamilySizeMemberSeeder extends Seeder
 
         DB::disableQueryLog(); //disable log
 
-        $totalRecords = 2000000; // Desired total number of records to insert
+        $totalRecords = 3700000; // Desired total number of records to insert
         $recordsPerIteration = 50000; // Number of records to insert per inner loop iteration
         $outerLoopIterations = ceil($totalRecords / $recordsPerIteration); // Calculate number of outer loop iterations
 
