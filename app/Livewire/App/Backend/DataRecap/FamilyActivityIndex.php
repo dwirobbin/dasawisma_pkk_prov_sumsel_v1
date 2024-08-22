@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Models\FamilyActivity;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use RalphJSmit\Livewire\Urls\Facades\Url as LivewireUrl;
 
@@ -22,6 +23,9 @@ class FamilyActivityIndex extends Component
 
     public ?string $currentUrl = NULL;
 
+    public array $familyActivities = [];
+    public bool $readyToLoad = false;
+
     public function mount()
     {
         $this->currentUrl = LivewireUrl::current();
@@ -32,7 +36,7 @@ class FamilyActivityIndex extends Component
         return view('placeholder');
     }
 
-    public function render()
+    public function getFamilyActivities()
     {
         $param = match (true) {
             str_contains($this->currentUrl, '/index') => 'index',
@@ -44,7 +48,7 @@ class FamilyActivityIndex extends Component
 
         $user = auth()->user();
 
-        $familyActivities = FamilyActivity::query()
+        $this->familyActivities = FamilyActivity::query()
             ->selectRaw("
                 SUM(CASE
                     WHEN ISNULL(NULLIF(family_activities.up2k_activity, ''))
@@ -128,10 +132,33 @@ class FamilyActivityIndex extends Component
             ->when($user->role_id == 2 && $user->admin->province_id != NULL, function (Builder $query) use ($user) {
                 $query->where('dasawismas.province_id', '=', $user->admin->province_id);
             })
-            ->simplePaginate($this->perPage);
+            ->simplePaginate($this->perPage)
+            ->toArray();
+
+        $this->readyToLoad = true;
+    }
+
+    public function render()
+    {
+        $data = null;
+
+        if ($this->readyToLoad) {
+            $this->getFamilyActivities();
+
+            $data = $this->familyActivities['data'];
+            $perPage = $this->perPage;
+            $currentPage = $this->familyActivities['current_page'] ?? 1;
+            $paginator = new Paginator($data, $perPage, $currentPage, [
+                'path' => Paginator::resolveCurrentPath(),
+            ]);
+
+            $paginator->hasMorePagesWhen($this->familyActivities['next_page_url'] ? true : false);
+
+            $data = $paginator;
+        }
 
         return view('livewire.app.backend.data-recap.family-activity-index', [
-            'data' => $familyActivities,
+            'data' => $data,
         ]);
     }
 }

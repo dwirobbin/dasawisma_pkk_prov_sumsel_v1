@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Models\FamilyBuilding;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use RalphJSmit\Livewire\Urls\Facades\Url as LivewireUrl;
 
@@ -16,6 +17,9 @@ class FamilyBuildingIndex extends Component
     public $param = '';
 
     public int $perPage = 5;
+
+    public array $familyBuildings = [];
+    public bool $readyToLoad = false;
 
     #[Url()]
     public string $search = '';
@@ -32,7 +36,7 @@ class FamilyBuildingIndex extends Component
         return view('placeholder');
     }
 
-    public function render()
+    public function getFamilyBuildings()
     {
         $param = match (true) {
             str_contains($this->currentUrl, '/index') => 'index',
@@ -44,7 +48,7 @@ class FamilyBuildingIndex extends Component
 
         $user = auth()->user();
 
-        $familyBuildings = FamilyBuilding::query()
+        $this->familyBuildings = FamilyBuilding::query()
             ->selectRaw("
                 COUNT(CASE WHEN family_buildings.staple_food = 'Beras' THEN 1 END) AS rice_foods_count,
                 COUNT(CASE WHEN family_buildings.staple_food = 'Non Beras' THEN 1 END) AS etc_rice_foods_count,
@@ -121,10 +125,33 @@ class FamilyBuildingIndex extends Component
             ->when($user->role_id == 2 && $user->admin->province_id != NULL, function (Builder $query) use ($user) {
                 $query->where('dasawismas.province_id', '=', $user->admin->province_id);
             })
-            ->simplePaginate($this->perPage);
+            ->simplePaginate($this->perPage)
+            ->toArray();
+
+        $this->readyToLoad = true;
+    }
+
+    public function render()
+    {
+        $data = null;
+
+        if ($this->readyToLoad) {
+            $this->getFamilyBuildings();
+
+            $data = $this->familyBuildings['data'];
+            $perPage = $this->perPage;
+            $currentPage = $this->familyBuildings['current_page'] ?? 1;
+            $paginator = new Paginator($data, $perPage, $currentPage, [
+                'path' => Paginator::resolveCurrentPath(),
+            ]);
+
+            $paginator->hasMorePagesWhen($this->familyBuildings['next_page_url'] ? true : false);
+
+            $data = $paginator;
+        }
 
         return view('livewire.app.backend.data-recap.family-building-index', [
-            'data' => $familyBuildings,
+            'data' => $data,
         ]);
     }
 }

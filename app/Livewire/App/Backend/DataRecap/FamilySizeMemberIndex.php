@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Models\FamilySizeMember;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Database\Eloquent\Builder;
 use RalphJSmit\Livewire\Urls\Facades\Url as LivewireUrl;
 
@@ -22,6 +23,9 @@ class FamilySizeMemberIndex extends Component
 
     public ?string $currentUrl = NULL;
 
+    public array $familySizeMembers = [];
+    public bool $readyToLoad = false;
+
     public function mount()
     {
         $this->currentUrl = LivewireUrl::current();
@@ -32,7 +36,7 @@ class FamilySizeMemberIndex extends Component
         return view('placeholder');
     }
 
-    public function render()
+    public function getFamilySizeMembers()
     {
         $param = match (true) {
             str_contains($this->currentUrl, '/index') => 'index',
@@ -44,7 +48,7 @@ class FamilySizeMemberIndex extends Component
 
         $user = auth()->user();
 
-        $familySizeMembers = FamilySizeMember::query()
+        $this->familySizeMembers = FamilySizeMember::query()
             ->selectRaw("
                 SUM(toddlers_number) AS toddlers_sum,
                 SUM(pus_number) AS pus_sum,
@@ -116,10 +120,33 @@ class FamilySizeMemberIndex extends Component
             ->when($user->role_id == 2 && $user->admin->province_id != NULL, function (Builder $query) use ($user) {
                 $query->where('dasawismas.province_id', '=', $user->admin->province_id);
             })
-            ->simplePaginate($this->perPage);
+            ->simplePaginate($this->perPage)
+            ->toArray();
+
+        $this->readyToLoad = true;
+    }
+
+    public function render()
+    {
+        $data = null;
+
+        if ($this->readyToLoad) {
+            $this->getFamilySizeMembers();
+
+            $data = $this->familySizeMembers['data'];
+            $perPage = $this->perPage;
+            $currentPage = $this->familySizeMembers['current_page'] ?? 1;
+            $paginator = new Paginator($data, $perPage, $currentPage, [
+                'path' => Paginator::resolveCurrentPath(),
+            ]);
+
+            $paginator->hasMorePagesWhen($this->familySizeMembers['next_page_url'] ? true : false);
+
+            $data = $paginator;
+        }
 
         return view('livewire.app.backend.data-recap.family-size-member-index', [
-            'data' => $familySizeMembers,
+            'data' => $data,
         ]);
     }
 }

@@ -83,7 +83,7 @@
         <div class="page-body pb-2">
             <div class="container-xl">
                 <div class="card">
-                    <livewire:app.backend.data-recap.family-size-member-index :$param lazy />
+                    <livewire:app.backend.data-recap.family-size-member-index :$param />
                 </div>
             </div>
         </div>

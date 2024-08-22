@@ -20,6 +20,7 @@ use App\Http\Controllers\Backend\DataRecap\FamilySizeMemberController as DataRec
 use App\Http\Controllers\Backend\DataRecap\FamilyMemberController as DataRecapFamilyMemberController;
 use App\Http\Controllers\Backend\DataRecap\FamilyActivityController as DataRecapFamilyActivityController;
 use App\Http\Controllers\Backend\HomeController;
+use Livewire\Livewire;
 
 Route::view('/', 'pages.frontend.home-index')->name('home');
 
